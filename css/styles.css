@@ -1,0 +1,14 @@
+body {
+    font-family: Arial, sans-serif;
+}
+h1 {
+
+    margin: 1rem;
+}
+
+.date-container {
+    text-align: center;
+    font-size: 2em; /* Increase font size */
+    border: 2px solid black;
+    border-radius: 1.5rem 1.5rem 0 0;
+}
