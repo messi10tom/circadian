@@ -12,3 +12,56 @@ h1 {
     border: 2px solid black;
     border-radius: 1.5rem 1.5rem 0 0;
 }
+.button-container {
+    display: flex;
+    padding: 0 1rem; /* Optional: Add padding to the container */
+    background-color: black;
+}
+.button {
+    background-color: black; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    margin: 0 1rem;
+    flex: 1;
+    cursor: pointer;
+  }
+
+.button:hover {
+        background-color: hsl(0, 0%, 10%);
+    }
+
+.events-spec {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    font-size: 0.7rem;
+}
+.events-spec th, .events-spec td {
+    border-left: 0.05rem solid rgba(0, 0, 0, 0.5);
+    padding: 8px; 
+}
+.events-1 {
+    width: 7.5%; 
+}
+.period-1 {
+    width: 5%; 
+}
+.business-1 {
+    width: 17.5%; 
+}
+.sub-activity-1 {
+    width: 20%; 
+}
+.events-2 {
+    width: 7.5%; 
+}
+.period-2 {
+    width: 5%; 
+}
+.business-2 {
+    width: 17.5%; 
+}
+.sub-activity-2 {
+    width: 20%; 
+}
