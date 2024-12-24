@@ -1,89 +1,51 @@
 body {
-    font-family: Arial, sans-serif;
-}
-h1 {
-
-    margin: 1rem;
+    background-color: #121212;
+    color: #e0e0e0;
 }
 
-.date-container {
-    text-align: center;
-    font-size: 2em; /* Increase font size */
-    border: 2px solid black;
-    border-radius: 1.5rem 1.5rem 0 0;
-}
-.button-container {
-    display: flex;
-    padding: 0 1rem; /* Optional: Add padding to the container */
-    background-color: black;
-}
-.button {
-    background-color: black; /* Green */
-    border: none;
-    color: white;
-    text-align: center;
-    font-size: 16px;
-    margin: 0 1rem;
-    flex: 1;
-    cursor: pointer;
-  }
-
-.button:hover {
-        background-color: hsl(0, 0%, 10%);
-    }
-
-.events-spec {
-    border-collapse: separate;
-    border-spacing: 0 10px;
-    font-size: 0.7rem;
-}
-.events-spec th, .events-spec td {
-    border-left: 0.05rem solid rgba(0, 0, 0, 0.5);
-    border-bottom: 0.05rem solid rgba(0, 0, 0, 0.5);
-    padding: 8px; 
-}
-.events-1, .events-2 {
-    width: 7.5%; 
-}
-.period-1, .period-2 {
-    width: 5%; 
-}
-.business-1, .business-2 {
-    width: 17.5%; 
-}
-.sub-activity-1, .sub-activity-2 {
-    width: 20%; 
+a {
+    color: #bb86fc;
 }
 
-.new-row {
-    display: flex;
-    margin: 0;
-    gap: 0;
+button {
+    background-color: #333333;
+    color: #e0e0e0;
+    border: 1px solid #444444;
 }
 
-.new-row input {
-    border: none; /* Remove borders */
-    padding: 8px; /* Optional: Add padding for better appearance */
-    margin: 0; /* Remove margin */
-    flex: 1; /* Make inputs take equal space */
+input, textarea {
+    background-color: #333333;
+    color: #e0e0e0;
+    border: 1px solid #444444;
 }
 
-.new-row input:focus {
-    outline: none; /* Remove outline on focus */
+header, footer {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
 }
 
-.new-row .events-1, .new-row .events-2 {
-    width: 7.5%;
+nav {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
 }
 
-.new-row .period-1, .new-row .period-2 {
-    width: 5%;
+.card {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 1px solid #444444;
 }
 
-.new-row .business-1, .new-row .business-2 {
-    width: 17.5%;
+table {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 1px solid #444444;
 }
 
-.new-row .sub-activity-1, .new-row .sub-activity-2 {
-    width: 20%;
+th, td {
+    border: 1px solid #444444;
+}
+
+::selection {
+    background-color: #bb86fc;
+    color: #121212;
 }

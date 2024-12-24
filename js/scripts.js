@@ -1,62 +1,48 @@
-function addInputRow(options) {
-    var template;
-    if (options == "business"){
-        template = `
-        <input type="text" class="events-1" id="events-1" placeholder="Events">
-        <input type="text" class="period-1" id="period-1" placeholder="Period">
-        <input type="text" class="business-1" id="business-1" placeholder="Business">
-        <input type="text" class="sub-activity-1" id="sub-activity-1" placeholder="Sub activity">
-        <input type="text" class="events-2" id="events-2" placeholder="Events">
-        <input type="text" class="period-2" id="period-2" placeholder="Period">
-        <input type="text" class="business-2" id="business-2" placeholder="Business">
-        <input type="text" class="sub-activity-2" id="sub-activity-2" placeholder="Sub activity">
-    `;
-    }
-    if (template) {
-        const inputContainer = document.getElementById('input-container');
-        const newRow = document.createElement('div');
-        newRow.className = 'new-row';
-        newRow.innerHTML = template;
-        inputContainer.appendChild(newRow);
+function getData(event) {
+  event.preventDefault();
+  
 
+//   Get the form data
+    const Events_1 = document.getElementById('events_1').value;
+    const Period_1 = document.getElementById('period_1').value;
+    const Business_1 = document.getElementById('business_1').value;
+    const Sub_activity_1 = document.getElementById('sub_activity_1').value;
+    const Events_2 = document.getElementById('events_2').value;
+    const Period_2 = document.getElementById('period_2').value;
+    const Business_2 = document.getElementById('business_2').value;
+    const Sub_activity_2 = document.getElementById('sub_activity_2').value;
+
+
+    if (Events_1 != "" && 
+        Period_1 != "" && 
+        Business_1 != "" && 
+        Sub_activity_1 != "" && 
+        Events_2 != "" && 
+        Period_2 != "" && 
+        Business_2 != "" && 
+        Sub_activity_2 != "") {
+
+        let data = {"Event_1": Events_1,
+                    "Period_1": Period_1,
+                    "Business_1": Business_1,
+                    "Sub_activity_1": Sub_activity_1,
+                    "Event_2": Events_2,
+                    "Period_2": Period_2,
+                    "Business_2": Business_2,
+                    "Sub_activity_2": Sub_activity_2
+        }
+        createTable(data);
     }
+
 }
 
-function addRow(options) {
-    addInputRow(options);
-    const table = document.getElementById('events-table');
-    const newRow = table.insertRow();
-
-    const events1 = document.getElementById('events-1').value;
-    const period1 = document.getElementById('period-1').value;
-    const business1 = document.getElementById('business-1').value;
-    const subActivity1 = document.getElementById('sub-activity-1').value;
-    const events2 = document.getElementById('events-2').value;
-    const period2 = document.getElementById('period-2').value;
-    const business2 = document.getElementById('business-2').value;
-    const subActivity2 = document.getElementById('sub-activity-2').value;
-
-    newRow.insertCell(0).textContent = events1;
-    newRow.insertCell(1).textContent = period1;
-    newRow.insertCell(2).textContent = business1;
-    newRow.insertCell(3).textContent = subActivity1;
-    newRow.insertCell(4).textContent = events2;
-    newRow.insertCell(5).textContent = period2;
-    newRow.insertCell(6).textContent = business2;
-    newRow.insertCell(7).textContent = subActivity2;
-
-    // Clear input fields after adding the row
-    document.getElementById('events-1').value = '';
-    document.getElementById('period-1').value = '';
-    document.getElementById('business-1').value = '';
-    document.getElementById('sub-activity-1').value = '';
-    document.getElementById('events-2').value = '';
-    document.getElementById('period-2').value = '';
-    document.getElementById('business-2').value = '';
-    document.getElementById('sub-activity-2').value = '';
+function createTable(data) {
+    var table = document.getElementById('data-table');
+    var tr = table.insertRow();
+    for (let key in data) {
+        var td = tr.insertCell();
+        var text = document.createTextNode(data[key]);
+        td.appendChild(text);
+    }
+    table.appendChild(tr);
 }
-
-const dateElement = document.getElementById('current-date');
-const today = new Date();
-const options = { day: '2-digit', month: 'long', year: 'numeric' };
-dateElement.textContent = today.toLocaleDateString('en-GB', options);
