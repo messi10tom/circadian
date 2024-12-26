@@ -1,6 +1,7 @@
 // Global Variables
 var STARTER_1;
 var STARTER_2;
+var CLICKED = false;
 
 
 
@@ -215,4 +216,39 @@ function getEvents(starter, period) {
     time_min = `${String(hour).padStart(2, '0')} : ${String(min).padStart(2, '0')}`;
 
     return [`${starter} - ${time_min}`, time_min];
+}
+
+
+function remove() {
+    let table = document.getElementById("data-table");
+    let lastIndex = table.rows.length - 1; // Index of the last row
+    if (lastIndex >= 1) { // Ensure the table has rows
+        table.deleteRow(lastIndex); // Remove the last row
+    }
+}
+
+function edit() {
+    if (CLICKED) {
+        table = document.getElementById("data-table");
+        document.getElementById("edit-button").textContent = "Edit";
+
+        for (let i = 0; i < table.rows.length; i++) {
+            for (let j = 0; j < table.rows[i].cells.length; j++) {
+                table.rows[i].cells[j].contentEditable = false;
+            }
+        }
+
+        CLICKED = false;
+        return;
+    }
+
+    table = document.getElementById("data-table");
+    document.getElementById("edit-button").textContent = "Submit";
+
+    for (let i = 0; i < table.rows.length; i++) {
+        for (let j = 0; j < table.rows[i].cells.length; j++) {
+            table.rows[i].cells[j].contentEditable = true;
+        }
+    }
+    CLICKED = true;
 }
