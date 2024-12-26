@@ -8,32 +8,35 @@ var CLICKED = false;
 
 
 function createStarter() {
-    button = document.getElementById("main-button")
-    if (button.textContent == "Starter") {
-        // Cleaning Previous Form and Changing Button Name
-        button.textContent = "Business"
-        document.getElementById("form-container").innerHTML = '<div id="form-container"></div>'
+    if (document.getElementById("edit-button").textContent == "Edit") {
 
-        // creating Starter Form
-        const fields = ['Starter', 'Title', 'Welcome']
-        const ids = ['starter', 'title', 'welcome']
-        const types = ['time', 'text', 'text']
-        createForm("form-container", fields, ids, types, "getStarterData(event)")
-    }
-    else {
+        button = document.getElementById("main-button")
+        if (button.textContent == "Starter") {
+            // Cleaning Previous Form and Changing Button Name
+            button.textContent = "Business"
+            document.getElementById("form-container").innerHTML = '<div id="form-container"></div>'
 
-        // Cleaning Previous Form and Changing Button Name
-        button.textContent = "Starter"
-        document.getElementById("form-container").innerHTML = '<div id="form-container"></div>'
+            // creating Starter Form
+            const fields = ['Starter', 'Title', 'Welcome']
+            const ids = ['starter', 'title', 'welcome']
+            const types = ['time', 'text', 'text']
+            createForm("form-container", fields, ids, types, "getStarterData(event)")
+        }
+        else {
 
-        // Creating Business Form
-        const fields = ["Period", "Business", "Sub Activity", "Period", "Business", "Sub Activity"];
-        const ids = ["period-1", "business-1", "sub-activity-1", "period-2", "business-2", "sub-activity-2"];
-        const types = ['number', 'text', 'text', 'number', 'text', 'text']
+            // Cleaning Previous Form and Changing Button Name
+            button.textContent = "Starter"
+            document.getElementById("form-container").innerHTML = '<div id="form-container"></div>'
+
+            // Creating Business Form
+            const fields = ["Period", "Business", "Sub Activity", "Period", "Business", "Sub Activity"];
+            const ids = ["period-1", "business-1", "sub-activity-1", "period-2", "business-2", "sub-activity-2"];
+            const types = ['number', 'text', 'text', 'number', 'text', 'text']
 
 
-        createForm("form-container", fields, ids, types, 'getBusinessData(event)')
+            createForm("form-container", fields, ids, types, 'getBusinessData(event)')
 
+        }
     }
 }
 
@@ -228,13 +231,20 @@ function remove() {
 }
 
 function edit() {
+
+    document.getElementById("form-container").innerHTML = '<div id="form-container"></div>'
+
     if (CLICKED) {
         table = document.getElementById("data-table");
         document.getElementById("edit-button").textContent = "Edit";
 
-        for (let i = 0; i < table.rows.length; i++) {
+        for (let i = 1; i < table.rows.length; i++) {
             for (let j = 0; j < table.rows[i].cells.length; j++) {
-                table.rows[i].cells[j].contentEditable = false;
+
+                if (j != 0 && j != 4) {
+                
+                    table.rows[i].cells[j].contentEditable = false;
+                }
             }
         }
 
@@ -245,10 +255,18 @@ function edit() {
     table = document.getElementById("data-table");
     document.getElementById("edit-button").textContent = "Submit";
 
-    for (let i = 0; i < table.rows.length; i++) {
+    for (let i = 1; i < table.rows.length; i++) {
         for (let j = 0; j < table.rows[i].cells.length; j++) {
-            table.rows[i].cells[j].contentEditable = true;
+
+            if (j != 0 && j != 4) {
+
+                table.rows[i].cells[j].contentEditable = true;
+            }
+            
         }
     }
     CLICKED = true;
 }
+
+
+function tracker() {}
