@@ -1,7 +1,10 @@
+
 // Global Variables
 var STARTER_1;
 var STARTER_2;
 var CLICKED = false;
+var EVENT_TRACKER_IN = [];
+var EVENT_TRACKER_OUT = [];
 
 
 
@@ -115,8 +118,7 @@ function getStarterData(event) {
     const welcome = document.getElementById('welcome').value;
 
     if (starter != "" && 
-        title != "" && 
-        welcome != "") {
+        title != "" ) {
 
         STARTER_1 = starter;
         STARTER_2 = starter;
@@ -127,7 +129,7 @@ function getStarterData(event) {
         }
         
         // Create table using the collected data
-        createTable(data)
+        createTable(data, starterData=true)
     }
 }
 
@@ -152,39 +154,49 @@ function getBusinessData(event) {
 
 
     if (Period_1 != "" && 
-        Business_1 != "" && 
-        Sub_activity_1 != "" && 
-        Period_2 != "" && 
-        Business_2 != "" && 
-        Sub_activity_2 != "") {
+        Business_1 != "") {
+
+            if (Period_2 != "" &&
+                Business_2 == "") {
+                    return;
+                }
 
 
 
-        let [Events_1, NEXT_STARTER_1] = getEvents(STARTER_1, Period_1)
-        let [Events_2, NEXT_STARTER_2] = getEvents(STARTER_2, Period_2)
 
-        STARTER_1 = NEXT_STARTER_1
-        STARTER_2 = NEXT_STARTER_2
+            var [Events_1, NEXT_STARTER_1] = getEvents(STARTER_1, Period_1)
 
-        let data = {"Event_1": Events_1,
-                    "Period_1": Period_1,
-                    "Business_1": Business_1,
-                    "Sub_activity_1": Sub_activity_1,
-                    "Event_2": Events_2,
-                    "Period_2": Period_2,
-                    "Business_2": Business_2,
-                    "Sub_activity_2": Sub_activity_2
-        }
+            if (Period_2 != "") {
+                var [Events_2, NEXT_STARTER_2] = getEvents(STARTER_2, Period_2)
+            }
 
-        // Create table using the collected data
-        createTable(data)
+            else {
+                Events_2 = "";
+                NEXT_STARTER_2 = NEXT_STARTER_1;
+            }
+
+            STARTER_1 = NEXT_STARTER_1
+            STARTER_2 = NEXT_STARTER_2
+
+            let data = {"Event_1": Events_1,
+                        "Period_1": Period_1,
+                        "Business_1": Business_1,
+                        "Sub_activity_1": Sub_activity_1,
+                        "Event_2": Events_2,
+                        "Period_2": Period_2,
+                        "Business_2": Business_2,
+                        "Sub_activity_2": Sub_activity_2
+            }
+
+            // Create table using the collected data
+            createTable(data)
     }
 
 }
 
 
 
-function createTable(data) {
+function createTable(data, starterData=false) {
     var table = document.getElementById("data-table"); 
 
     var tr = table.insertRow();
@@ -193,6 +205,17 @@ function createTable(data) {
         var td = tr.insertCell();
         var text = document.createTextNode(data[key]);
         td.appendChild(text);
+
+        if (starterData) {
+            if (key == "Title") {
+                td.colSpan = 3;
+            }
+
+            else if (key == "Welcome") {
+                td.colSpan = 4;
+            }
+        }
+
     }
 
     table.appendChild(tr);
@@ -216,7 +239,7 @@ function getEvents(starter, period) {
     hour = Math.floor(time_min / 60) % 24;
     min = time_min - hour * 60;
 
-    time_min = `${String(hour).padStart(2, '0')} : ${String(min).padStart(2, '0')}`;
+    time_min = `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
 
     return [`${starter} - ${time_min}`, time_min];
 }
@@ -242,12 +265,23 @@ function edit() {
             for (let j = 0; j < table.rows[i].cells.length; j++) {
 
                 if (j != 0 && j != 4) {
+
+                    if (j == 1 || j == 5) {
+
+                        let track_data = {"row": i,
+                                          "cell": j,
+                                          "content": table.rows[i].cells[j].textContent
+                                         }
+
+                        EVENT_TRACKER_OUT.push(track_data);
+                    }
                 
                     table.rows[i].cells[j].contentEditable = false;
                 }
             }
         }
 
+        sender();
         CLICKED = false;
         return;
     }
@@ -255,10 +289,20 @@ function edit() {
     table = document.getElementById("data-table");
     document.getElementById("edit-button").textContent = "Submit";
 
+
     for (let i = 1; i < table.rows.length; i++) {
         for (let j = 0; j < table.rows[i].cells.length; j++) {
 
             if (j != 0 && j != 4) {
+
+                if (j == 1 || j == 5) {
+
+                    let track_data = {"row": i,
+                                      "cell": j,
+                                      "content": table.rows[i].cells[j].textContent
+                                     }
+                    EVENT_TRACKER_IN.push(track_data);
+                }
 
                 table.rows[i].cells[j].contentEditable = true;
             }
@@ -269,4 +313,66 @@ function edit() {
 }
 
 
-function tracker() {}
+// TODO: Implement some way to collect all the periods from the table even if the table have multiple starters.
+// TODO(optional): Some way to save data so that instead of taking from the DOM collect it from the saved data.
+function tracker(row, cell, period) {
+    table = document.getElementById("data-table");
+    let content = table.rows[row].cells[cell - 1];
+    content = content.textContent;
+    content = content.slice(0, 5);
+
+    for (let i = row; i < table.rows.length; i++) {
+
+        if (table.rows[i].cells.length == 3) break;
+        
+        content = getEvents(content, table.rows[i].cells[cell].textContent);
+        content = content[0];
+        table.rows[i].cells[cell - 1].textContent = content;
+        content = content.slice(8, 13);
+        }
+}
+
+function sender() {
+
+    let table = document.getElementById("data-table");
+    // Compare elements
+    for (let i = 0; i < EVENT_TRACKER_IN.length; i++) {
+        let track_data_1 = EVENT_TRACKER_IN[i];
+        let track_data_2 = EVENT_TRACKER_OUT[i];
+
+        if (track_data_1["content"] !== track_data_2["content"]) {
+
+            if (table.rows[track_data_2["row"]].cells.length != 3) {
+                tracker(track_data_2["row"],
+                        track_data_2["cell"],
+                        track_data_2["content"]
+            );
+            }
+            
+        }
+    }
+
+    EVENT_TRACKER_IN = [];
+    EVENT_TRACKER_OUT = [];
+}
+
+
+document.getElementById("save-button").addEventListener("click", function() {
+    const { jsPDF } = window.jspdf; // Access jsPDF from the global scope
+
+    // Create a new jsPDF instance
+    const doc = new jsPDF();
+
+    // Grab the table
+    const table = document.getElementById("data-table");
+
+    // Use autoTable to convert the HTML table to PDF
+    doc.autoTable({
+        html: table, // The table to convert
+        startY: 10,  // Start position for the table
+    });
+
+    // Save the PDF with a filename
+    doc.save("table.pdf");
+});
+

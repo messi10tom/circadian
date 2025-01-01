@@ -12,6 +12,7 @@
         <button type="button" id="main-button" onclick="createStarter()">Starter</button>
         <button type="button" id="remove-button" onclick="remove()">Remove</button>
         <button type="button" id="edit-button" onclick="edit()">Edit</button>
+        <button type="button" id="save-button" onclick="exportTableToPDF()">Save</button>
 
     </div>
     <div id="form-container"></div>
@@ -32,7 +33,13 @@
         </table>
     </div>
 
-    <script src="js/scripts.js"></script>
+    <!-- Load jsPDF -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@latest/dist/jspdf.umd.min.js"></script>
+  <!-- Load jsPDF AutoTable -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable"></script>
+
+  <!-- Custom Script -->
+  <script src="js/scripts.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             createStarter();
