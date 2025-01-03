@@ -59,11 +59,14 @@
     font-size: 1.5rem; 
 }
 
-#data-table tr.starter-row {
+#data-table tr.starter-row, #data-table tr.todo-row {
     background-color: #004561; /* Ensure this is the desired color */
     color: #ffffff; /* Change text color to white */
-    font-size: 1.5em;
-    font-weight: bold;
+    font-size: 1.25em;
+}
+
+#data-table tr.todo-row {
+    background-color: #6aa84f; 
 }
 
 

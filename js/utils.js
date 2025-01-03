@@ -13,7 +13,13 @@ import { GLOBAL_DATA_STORE } from "./scripts.js";
 
 
 
-export function createForm(container, fields, ids, types, headline, call) {
+export function createForm(container, 
+                           fields, 
+                           ids, 
+                           types, 
+                           headline, 
+                           call, 
+                           br=0) {
 
     container = document.getElementById(container);
     // Create form element
@@ -48,7 +54,11 @@ export function createForm(container, fields, ids, types, headline, call) {
     }
     
     if (call) {
-        
+
+        for (let i = 0; i < br; i++) {
+            form.appendChild(document.createElement('br'));
+        }
+        // Create submit button
         const submitButton = document.createElement('input');
 
         submitButton.setAttribute('type', 'submit');
@@ -103,6 +113,34 @@ export function getTable() {
                 }
             }
         }
+        else if (data.isTODO) {
+            const row = table.rows[i + 1];
+
+            row.classList.add("todo-row");
+
+            row.cells[0].textContent = data.TODOdata.TODO;
+            row.cells[1].textContent = data.TODOdata.Business;
+            row.cells[2].textContent = data.TODOdata.Sub_activity;
+
+            row.cells[1].colSpan = 3;
+            row.cells[2].colSpan = 4;
+
+            if (row.cells.length > 3) {
+                for (let j = 3; j <= 7; j++) {
+                    row.deleteCell(3);
+                }
+            }
+
+            // row.cells[0].textContent = data.todoData.TODO;
+            // row.cells[1].textContent = data.todoData.Importance;
+            // row.cells[2].textContent = data.todoData.Urgency;
+            // row.cells[3].textContent = data.todoData.Due;
+            // row.cells[4].textContent = data.todoData.Completed;
+            // row.cells[5].textContent = data.todoData.Completed_on;
+            // row.cells[6].textContent = data.todoData.Completed_at;
+            // row.cells[7].textContent = data.todoData.Completed_in;
+        }
+
         else {
             const row = table.rows[i + 1];
 
@@ -117,3 +155,7 @@ export function getTable() {
         }
     }
 }
+
+
+
+

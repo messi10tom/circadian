@@ -79,7 +79,7 @@ createForm("form-container",
            ids,
            types,
            "Business 1",
-           "getBusinessData(event)")
+           "getBusinessData(event)");
 
 ids = ["period-2", "business-2", "sub-activity-2"];
 
@@ -87,4 +87,18 @@ createForm("form-container",
            fields, 
            ids, 
            types, 
-           "Business 2(Optional)")
+           "Business 2(Optional)");
+
+
+fields = ["Business       :  ", 
+          "Sub Activity :  "];
+ids = ["business", "sub-activity"];
+types = ['text', 'text'];
+
+createForm("form-container",
+    fields, 
+    ids, 
+    types, 
+    "TODO",
+    "getTODOdata(event)",
+    2);

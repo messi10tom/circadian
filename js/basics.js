@@ -66,7 +66,8 @@ function getStarterData(event) {
             // Log the collected data
             console.log(JSON.stringify(data, null, 2));
             GLOBAL_DATA_STORE.push({"starterData": data,
-                                    "isStarter": true
+                                    "isStarter": true,
+                                    "isTODO": false
             })
 
             getTable();
@@ -137,7 +138,8 @@ function getBusinessData(event) {
               // Log the collected data
               console.log(JSON.stringify(data, null, 2));
               GLOBAL_DATA_STORE.push({"businessData": data,
-                                        "isStarter": false
+                                        "isStarter": false,
+                                        "isTODO": false
               })
 
               getTable();
@@ -148,3 +150,82 @@ function getBusinessData(event) {
 
 // Ensure this function is accessible globally
 window.getBusinessData = getBusinessData;
+
+
+
+function getTODOdata(event) {
+    event.preventDefault();
+  
+    // Get the form data
+    const business = document.getElementById('business').value;
+    const sub_activity = document.getElementById('sub-activity').value;
+  
+    if (business != "" ) {
+  
+            let data = {"TODO": "TODO: ",
+                        "Business": business,
+                        "Sub_activity": sub_activity}
+  
+            // Log the collected data
+            console.log(JSON.stringify(data, null, 2));
+            GLOBAL_DATA_STORE.push({"TODOdata": data,
+                                    "isStarter": false,
+                                    "isTODO": true
+            })
+
+            getTable();
+        }
+  }
+
+
+
+
+// Ensure this function is accessible globally
+window.getTODOdata = getTODOdata;
+
+
+
+function saveDataStore() {
+    const dataStr = JSON.stringify(GLOBAL_DATA_STORE);
+    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+    const exportFileDefaultName = 'data_store.json';
+
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+}
+
+
+
+// Ensure this function is accessible globally
+window.saveDataStore = saveDataStore;
+
+
+
+export function loadFile() {
+    const fileInput = document.getElementById('file-input');
+    fileInput.click();
+
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const content = e.target.result;
+                const json = JSON.parse(content);
+                GLOBAL_DATA_STORE.length = 0; // Clear the array
+                GLOBAL_DATA_STORE.push(...json); // Populate the array with new data
+                getTable(); // Update the table
+            };
+            reader.readAsText(file);
+        }
+    });
+}
+
+
+
+
+// Ensure this function is accessible globally
+window.loadFile = loadFile;
