@@ -14,11 +14,43 @@
         <button type="button" id="save-button" onclick="">Save</button>
         <button type="button" id="submit-button" onclick="">Submit</button>
     </div>
-    <br>
     <div id="form-container"></div>
+    <br>
+    <div id="table-container">
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th id="Event-1">Event</th>
+                    <th id="Period-1">Period</th>
+                    <th id="Business-1">Business</th>
+                    <th id="Sub-activity-1">Sub Activity</th>
+                    <th id="Event-2">Event</th>
+                    <th id="Period-2">Period</th>
+                    <th id="Business-2">Business</th>
+                    <th id="Sub-activity-2">Sub Activity</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Rows will be added here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
 
   <!-- Custom Script -->
+  <script type="module" src="js/basics.js"></script>
   <script type="module" src="js/scripts.js"></script>
-  <script src="js/basics.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tableBody = document.getElementById('table-body');
+        for (let i = 0; i < 30; i++) {
+            const row = document.createElement('tr');
+            for (let j = 0; j < 8; j++) {
+                const cell = document.createElement('td');
+                row.appendChild(cell);
+            }
+            tableBody.appendChild(row);
+        }
+    });
+</script>
 </body>
 </html>
