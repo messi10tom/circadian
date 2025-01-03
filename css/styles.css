@@ -1,60 +1,19 @@
-#data-table {
-    border-collapse: collapse;
-    /* border: 1px solid #616161; */
-    width: 100%;
-    text-align: center; /* Center align text */
+#form-container {
+    display: flex;
+    justify-content: left;
+    align-items: top;
+    gap: 50px;
+    
 }
 
-#data-table th, #data-table td {
-    /* border: 1px solid #bebebe81; */
-    padding: 1.25px;
-    text-align: center; /* Center align text */
+#form-container #starter {
+    width: 18em;
 }
 
-/* Alternate row colors */
-#data-table tr:nth-child(odd) {
-    background-color: #f2f2f2; /* Light shade */
+#form-container #title {
+    width: 18em;
 }
 
-#data-table tr:nth-child(even) {
-    background-color: #ddf2f0; /* Dark shade */
-}
-
-
-#data-table th {
-    color: #000000; /* Change text color to white */
-    font-size: 1.125em; /* Increase font size */
-}
-
-#data-table .date-header {
-    font-size: 3rem; 
-    font-weight: bold; /* Make text bold */
-    border-radius: 1.5rem 1.5rem 0 0;
-    background-color: #26a69a;
-    color: #ffffff; /* Change text color to white */
-}
-
-
-#data-table tr.starter-row {
-    background-color: #004561; /* Ensure this is the desired color */
-    color: #ffffff; /* Change text color to white */
-    font-size: 1.5em;
-    font-weight: bold;
-}
-
-
-#Event-1, #Event-2 {
-    width: 10%; /* Custom width for Event-1 and Event-2 */
-}
-
-#Period-1, #Period-2 {
-    width: 5%; /* Custom width for Period-1 and Period-2 */
-}
-
-#Business-1, #Business-2 {
-    width: 15%; /* Custom width for Business-1 and Business-2 */
-}
-
-#Sub-activity-1, #Sub-activity-2 {
-    width: 20%; /* Custom width for Sub-activity-1 and Sub-activity-2 */
+#form-container #welcome {
+    width: 18em;
 }

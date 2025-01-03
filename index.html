@@ -7,43 +7,18 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    
-    <div id="main-container">
-        <button type="button" id="main-button" onclick="createStarter()">Starter</button>
-        <button type="button" id="remove-button" onclick="remove()">Remove</button>
-        <button type="button" id="edit-button" onclick="edit()">Edit</button>
-        <button type="button" id="save-button" onclick="exportTableToPDF()">Save</button>
-
+    <!-- Main buttons on top of the UI, these are for basic editing functions -->
+    <div id="button-container">
+        <button type="button" id="remove-button" onclick="">Remove</button>
+        <button type="button" id="edit-button" onclick="">Edit</button>
+        <button type="button" id="save-button" onclick="">Save</button>
+        <button type="button" id="submit-button" onclick="">Submit</button>
     </div>
+    <br>
     <div id="form-container"></div>
-    <div id="table-container">
-        <table id="data-table">
-            <thead>
-                <tr>
-                    <th id="Event-1">Event</th>
-                    <th id="Period-1">Period</th>
-                    <th id="Business-1">Business</th>
-                    <th id="Sub-activity-1">Sub Activity</th>
-                    <th id="Event-2">Event</th>
-                    <th id="Period-2">Period</th>
-                    <th id="Business-2">Business</th>
-                    <th id="Sub-activity-2">Sub Activity</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-
-    <!-- Load jsPDF -->
-  <script src="https://cdn.jsdelivr.net/npm/jspdf@latest/dist/jspdf.umd.min.js"></script>
-  <!-- Load jsPDF AutoTable -->
-  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable"></script>
 
   <!-- Custom Script -->
-  <script src="js/scripts.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            createStarter();
-        });
-    </script>
+  <script type="module" src="js/scripts.js"></script>
+  <script src="js/basics.js"></script>
 </body>
 </html>
