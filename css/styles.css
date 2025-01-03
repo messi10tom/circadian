@@ -1,51 +1,60 @@
-body {
-    background-color: #121212;
-    color: #e0e0e0;
+#data-table {
+    border-collapse: collapse;
+    /* border: 1px solid #616161; */
+    width: 100%;
+    text-align: center; /* Center align text */
 }
 
-a {
-    color: #bb86fc;
+#data-table th, #data-table td {
+    /* border: 1px solid #bebebe81; */
+    padding: 1.25px;
+    text-align: center; /* Center align text */
 }
 
-button {
-    background-color: #333333;
-    color: #e0e0e0;
-    border: 1px solid #444444;
+/* Alternate row colors */
+#data-table tr:nth-child(odd) {
+    background-color: #f2f2f2; /* Light shade */
 }
 
-input, textarea {
-    background-color: #333333;
-    color: #e0e0e0;
-    border: 1px solid #444444;
+#data-table tr:nth-child(even) {
+    background-color: #ddf2f0; /* Dark shade */
 }
 
-header, footer {
-    background-color: #1f1f1f;
-    color: #e0e0e0;
+
+#data-table th {
+    color: #000000; /* Change text color to white */
+    font-size: 1.125em; /* Increase font size */
 }
 
-nav {
-    background-color: #1f1f1f;
-    color: #e0e0e0;
+#data-table .date-header {
+    font-size: 3rem; 
+    font-weight: bold; /* Make text bold */
+    border-radius: 1.5rem 1.5rem 0 0;
+    background-color: #26a69a;
+    color: #ffffff; /* Change text color to white */
 }
 
-.card {
-    background-color: #1e1e1e;
-    color: #e0e0e0;
-    border: 1px solid #444444;
+
+#data-table tr.starter-row {
+    background-color: #004561; /* Ensure this is the desired color */
+    color: #ffffff; /* Change text color to white */
+    font-size: 1.5em;
+    font-weight: bold;
 }
 
-table {
-    background-color: #1e1e1e;
-    color: #e0e0e0;
-    border: 1px solid #444444;
+
+#Event-1, #Event-2 {
+    width: 10%; /* Custom width for Event-1 and Event-2 */
 }
 
-th, td {
-    border: 1px solid #444444;
+#Period-1, #Period-2 {
+    width: 5%; /* Custom width for Period-1 and Period-2 */
 }
 
-::selection {
-    background-color: #bb86fc;
-    color: #121212;
+#Business-1, #Business-2 {
+    width: 15%; /* Custom width for Business-1 and Business-2 */
+}
+
+#Sub-activity-1, #Sub-activity-2 {
+    width: 20%; /* Custom width for Sub-activity-1 and Sub-activity-2 */
 }

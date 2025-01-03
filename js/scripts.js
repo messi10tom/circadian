@@ -7,6 +7,24 @@ var EVENT_TRACKER_IN = [];
 var EVENT_TRACKER_OUT = [];
 
 
+// Get the date in desired format
+const today = new Date();
+const options = { day: '2-digit', month: 'long', year: 'numeric' };
+const formattedDate = today.toLocaleDateString('en-GB', options);
+
+// Get the table element
+const table = document.getElementById("data-table");
+
+// Create a new row for the date
+const dateRow = document.createElement("tr");
+const dateCell = document.createElement("th");
+dateCell.setAttribute("colspan", "8"); // Merge all columns for the date heading
+dateCell.textContent = formattedDate; // Set the date text
+dateCell.classList.add("date-header"); // Add a class to the date cell
+dateRow.appendChild(dateCell);
+
+// Insert the date row at the top of the table header
+table.querySelector("thead").prepend(dateRow);
 
 
 
@@ -201,6 +219,10 @@ function createTable(data, starterData=false) {
 
     var tr = table.insertRow();
 
+    if (starterData) {
+        tr.classList.add("starter-row");
+    }
+
     for (let key in data) {
         var td = tr.insertCell();
         var text = document.createTextNode(data[key]);
@@ -375,4 +397,5 @@ document.getElementById("save-button").addEventListener("click", function() {
     // Save the PDF with a filename
     doc.save("table.pdf");
 });
+
 
