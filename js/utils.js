@@ -95,8 +95,20 @@ export function getTable() {
 
     for (let i = 1; i <= numDataEntries; i++) {
         let data = GLOBAL_DATA_STORE[i-1];
+        const row = table.rows[i + 1];
+
+        // Cleaning the row
+        while (row.firstChild) {
+            row.removeChild(row.firstChild);
+        }
+
+        // Remove any class if the row has
+        row.className = '';
+        for (let j = 0; j < 8; j++) {
+            row.insertCell(0);
+}
+        
         if (data.isStarter) {
-            const row = table.rows[i + 1];
 
             row.classList.add("starter-row");
 
@@ -114,7 +126,6 @@ export function getTable() {
             }
         }
         else if (data.isTODO) {
-            const row = table.rows[i + 1];
 
             row.classList.add("todo-row");
 
@@ -142,7 +153,6 @@ export function getTable() {
         }
 
         else {
-            const row = table.rows[i + 1];
 
             row.cells[0].textContent = data.businessData.Event_1;
             row.cells[1].textContent = data.businessData.Period_1;

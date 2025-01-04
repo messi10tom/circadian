@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Circadian</title>
+    <link rel="stylesheet" href="css/ui.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <!-- Main buttons on top of the UI, these are for basic editing functions -->
     <div id="button-container">
-        <button type="button" id="remove-button" onclick="">Remove</button>
+        <button type="button" id="remove-button" onclick="clearDataStore()">Remove</button>
         <button type="button" id="edit-button" onclick="">Edit</button>
-        <button type="button" id="submit-button" onclick="">Submit</button>
+        <!-- <button type="button" id="submit-button" onclick="">Submit</button> -->
         <button type="button" id="save-button" onclick="saveDataStore()">Save</button>
         <button type="button" id="load-button" onclick="loadFile()">Load</button>
         <input type="file" id="file-input" accept=".json" style="display: none;">

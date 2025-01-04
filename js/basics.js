@@ -186,6 +186,8 @@ window.getTODOdata = getTODOdata;
 
 
 function saveDataStore() {
+    if (GLOBAL_DATA_STORE.length == 0) return;
+
     const dataStr = JSON.stringify(GLOBAL_DATA_STORE);
     const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
@@ -229,3 +231,84 @@ export function loadFile() {
 
 // Ensure this function is accessible globally
 window.loadFile = loadFile;
+
+
+
+function convertToCheckBox() {
+    const table = document.getElementById('data-table');
+    const rows = table.rows;
+    const numROWS = table.rows.length;
+    const numDataEntries = GLOBAL_DATA_STORE.length;
+
+    if (numDataEntries == 0) return
+
+    for (let i = 0; i < numROWS; i++) {
+
+        if (i < 2) {
+            const cell = rows[i].insertCell(0);
+            cell.classList.add('checkbox-column');
+        }
+        
+        else {
+            const cell = rows[i].insertCell(0);
+            const checkBox = document.createElement('input');
+            checkBox.setAttribute('type', 'checkbox');
+            checkBox.setAttribute('id', `checkbox-${i}`);
+            checkBox.setAttribute('onclick', `getCheckBoxData(${i})`);
+            cell.appendChild(checkBox);
+
+            cell.classList.add('checkbox-column');
+        }
+    }
+}
+
+var CHECKBOX_LIST = [];
+
+function getCheckBoxData(row) {
+    
+    if (CHECKBOX_LIST.includes(row)) {
+        CHECKBOX_LIST = CHECKBOX_LIST.filter(item => item !== row);
+
+    } else {
+        CHECKBOX_LIST.push(row);
+    }
+}
+
+function clearCheckBox() {
+    const table = document.getElementById('data-table');
+    const rows = table.rows;
+    const numROWS = rows.length;
+
+    for (let i = 0; i < numROWS; i++) {
+        rows[i].deleteCell(0); // Delete the first cell in each row
+    }
+}
+
+function clearDataStore() {
+    const button = document.getElementById("remove-button");
+    const table = document.getElementById('data-table');
+
+    if (button.textContent == "Remove") {
+
+        button.textContent = "Select";
+        convertToCheckBox();
+    }
+    else {
+
+        button.textContent = "Remove";
+        for (let i = 0; i < CHECKBOX_LIST.length; i++) {
+            GLOBAL_DATA_STORE.splice(CHECKBOX_LIST[i] - 2, 1);
+
+        }
+        clearCheckBox();
+        getTable();
+    }
+
+}
+
+
+
+
+// Ensure this function is accessible globally
+window.clearDataStore = clearDataStore;
+window.getCheckBoxData = getCheckBoxData;
