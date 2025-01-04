@@ -167,5 +167,61 @@ export function getTable() {
 }
 
 
+function edit() {
+    let button = document.getElementById("edit-button");
+    const tableBody = document.getElementById('table-body');
+
+    if (GLOBAL_DATA_STORE.length == 0) {
+        return;
+    }
+    
+    if (button.textContent == "Edit") {
+        button.textContent = "Submit";
+
+        for (let i = 0; i < GLOBAL_DATA_STORE.length; i++) {
+            for (let j = 0; j < tableBody.rows[i].cells.length; j++) {
+
+                if (j != 0 && j != 4) {
+                    tableBody.rows[i].cells[j].contentEditable = true;
+  
+        }}}
+        
+    }
+    else {
+        button.textContent = "Edit";
+        Array.from(tableBody.rows).forEach((row, rowIndex) => {
+            const cells = row.querySelectorAll('td[contenteditable]');
+            // console.log(`Row ${index + 1}: ${Array.from(cells).map(cell => cell.textContent).join(', ')}`);
+            cells.forEach((cell, colIndex) => {
+
+                cell.contentEditable = false; // Disable editing
+
+                const value = cell.textContent.trim(); // Get the edited value
+
+                if (GLOBAL_DATA_STORE[rowIndex].isStarter) {
+                    if (colIndex == 0) GLOBAL_DATA_STORE[rowIndex].starterData.Title = value;
+                    else if (colIndex == 1) GLOBAL_DATA_STORE[rowIndex].starterData.Welcome = value;
+                }
+                else if (GLOBAL_DATA_STORE[rowIndex].isTODO) {
+                    if (colIndex == 0) GLOBAL_DATA_STORE[rowIndex].TODOdata.Business = value;
+                    else if (colIndex == 1) GLOBAL_DATA_STORE[rowIndex].TODOdata.Sub_activity = value;
+                }
+                else {
+                    if (colIndex == 0) GLOBAL_DATA_STORE[rowIndex].businessData.Period_1 = value;
+                    else if (colIndex == 1) GLOBAL_DATA_STORE[rowIndex].businessData.Business_1 = value;
+                    else if (colIndex == 2) GLOBAL_DATA_STORE[rowIndex].businessData.Sub_activity_1 = value;
+                    else if (colIndex == 3) GLOBAL_DATA_STORE[rowIndex].businessData.Period_2 = value;
+                    else if (colIndex == 4) GLOBAL_DATA_STORE[rowIndex].businessData.Business_2 = value;
+                    else if (colIndex == 5) GLOBAL_DATA_STORE[rowIndex].businessData.Sub_activity_2 = value;
+                }
+
+            });
+            
+        });
+}}
 
 
+
+
+
+window.edit = edit;

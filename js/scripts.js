@@ -66,7 +66,7 @@ createForm("form-container",
            fields, 
            ids, 
            types, 
-           "Starter", 
+           "STARTER", 
            "getStarterData(event)")
 
 
@@ -91,7 +91,7 @@ createForm("form-container",
            fields,
            ids,
            types,
-           "Business 1",
+           "BUSINESS 1",
            "getBusinessData(event)");
 
 ids = ["period-2", "business-2", "sub-activity-2"];
@@ -100,7 +100,7 @@ createForm("form-container",
            fields, 
            ids, 
            types, 
-           "Business 2(Optional)");
+           "BUSINESS 2");
 
 
 fields = ["Business       :  ", 
