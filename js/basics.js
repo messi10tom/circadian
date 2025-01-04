@@ -1,4 +1,4 @@
-import {GLOBAL_DATA_STORE} from './scripts.js'
+import {GLOBAL_DATA_STORE, defaultTable} from './scripts.js'
 import {getTable} from './utils.js'
 
 
@@ -276,17 +276,19 @@ function getCheckBoxData(row) {
 
 function clearCheckBox() {
     const table = document.getElementById('data-table');
+    document.getElementById('table-body').innerHTML = "";
     const rows = table.rows;
-    const numROWS = rows.length;
 
-    for (let i = 0; i < numROWS; i++) {
+    for (let i = 0; i < 2; i++) {
         rows[i].deleteCell(0); // Delete the first cell in each row
     }
+
+    defaultTable();
 }
 
 function clearDataStore() {
     const button = document.getElementById("remove-button");
-    const table = document.getElementById('data-table');
+    // const table = document.getElementById('data-table');
 
     if (button.textContent == "Remove") {
 
@@ -294,12 +296,16 @@ function clearDataStore() {
         convertToCheckBox();
     }
     else {
-
+   
         button.textContent = "Remove";
+        CHECKBOX_LIST.sort((a, b) => b - a);
         for (let i = 0; i < CHECKBOX_LIST.length; i++) {
+            // console.log(JSON.stringify(GLOBAL_DATA_STORE, null, 2))
             GLOBAL_DATA_STORE.splice(CHECKBOX_LIST[i] - 2, 1);
 
         }
+        // console.log(JSON.stringify(GLOBAL_DATA_STORE, null, 2))
+        CHECKBOX_LIST = [];
         clearCheckBox();
         getTable();
     }

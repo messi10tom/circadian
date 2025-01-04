@@ -10,6 +10,19 @@ export var GLOBAL_DATA_STORE = [];
  *   - eg: Work, School, etc.
  */
 
+export function defaultTable() {
+    const tableBody = document.getElementById('table-body');
+        for (let i = 0; i < 30; i++) {
+            const row = document.createElement('tr');
+            for (let j = 0; j < 8; j++) {
+                const cell = document.createElement('td');
+                row.appendChild(cell);
+            }
+            tableBody.appendChild(row);
+    }
+}
+
+defaultTable();
 
 // Get the date in desired format
 const today = new Date();
