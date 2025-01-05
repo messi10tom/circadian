@@ -10,14 +10,15 @@
 <body>
     <!-- Main buttons on top of the UI, these are for basic editing functions -->
     <div id="button-container">
-        <button type="button" id="remove-button" onclick="clearDataStore()">Remove</button>
-        <button type="button" id="edit-button" onclick="edit()">Edit</button>
-        <!-- <button type="button" id="submit-button" onclick="">Submit</button> -->
-        <button type="button" id="save-button" onclick="saveDataStore()">Save</button>
-        <button type="button" id="load-button" onclick="loadFile()">Load</button>
-        <input type="file" id="file-input" accept=".json" style="display: none;">
+        <button type="button" class="button-53" id="remove-button" onclick="clearDataStore()">REMOVE</button>
+        <button type="button" class="button-53" id="edit-button" onclick="edit()">EDIT</button>
+        <button type="button" class="button-53" id="save-button" onclick="saveDataStore()">SAVE</button>
+        <button type="button" class="button-53" id="load-button" onclick="loadFile()">LOAD</button>
+        <input type="file" class="button-53" id="file-input" accept=".json" style="display: none;">
     </div>
-    <div id="form-container"></div>
+    <div id="form-container">
+        <div id="title-bar"></div>
+    </div>
     <br>
     <div id="table-container">
         <table id="data-table">
@@ -38,6 +39,18 @@
             </tbody>
         </table>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const titleElement = document.querySelector('.SBT-title');
+            const titleBar = document.getElementById('title-bar');
+
+            if (titleElement && titleBar) {
+                const titleHeight = titleElement.offsetHeight;
+                // Set a CSS variable with the title height
+                document.documentElement.style.setProperty('--title-height', `${titleHeight + titleBar.offsetHeight * 0.5}px`);
+            }
+        });
+    </script>
 
   <!-- Custom Script -->
   <script type="module" src="js/basics.js"></script>

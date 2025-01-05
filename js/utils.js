@@ -28,6 +28,7 @@ export function createForm(container,
     const title = document.createElement('h2');
 
     title.textContent = headline;
+    title.classList.add("SBT-title")
     form.appendChild(title);
 
     // Function to create label and input elements
@@ -175,8 +176,8 @@ function edit() {
         return;
     }
     
-    if (button.textContent == "Edit") {
-        button.textContent = "Submit";
+    if (button.textContent == "EDIT") {
+        button.textContent = "SUBMIT";
 
         for (let i = 0; i < GLOBAL_DATA_STORE.length; i++) {
             for (let j = 0; j < tableBody.rows[i].cells.length; j++) {
@@ -188,7 +189,7 @@ function edit() {
         
     }
     else {
-        button.textContent = "Edit";
+        button.textContent = "EDIT";
         Array.from(tableBody.rows).forEach((row, rowIndex) => {
             const cells = row.querySelectorAll('td[contenteditable]');
             // console.log(`Row ${index + 1}: ${Array.from(cells).map(cell => cell.textContent).join(', ')}`);

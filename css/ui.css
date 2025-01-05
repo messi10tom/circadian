@@ -2,3 +2,101 @@
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(255, 255, 255);
 }
+
+/* <!-- HTML !-->
+<button class="button-53" role="button">Button 53</button> */
+
+/* filepath: /home/sockdologizing/GitHub/circadian/css/ui.css */
+#button-container {
+  display: flex;
+  width: 20000px; /* Fixed width */
+  gap: 10px;
+  margin: 0 auto; /* Center the container */
+  text-align: center; /* Center the buttons inside the container */
+}
+
+.button-53 {
+  background-color: #63d297;
+  border: 0 solid #E5E7EB;
+  box-sizing: border-box;
+  color: #000000;
+  font-family: ui-sans-serif, system-ui, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 700;
+  justify-content: center;
+  line-height: 1.75rem;
+  padding: .75rem 1.65rem;
+  position: relative;
+  text-align: center;
+  text-decoration: none #000000 solid;
+  text-decoration-thickness: auto;
+  width: 100%;
+  max-width: 460px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-53:focus {
+  outline: 0;
+}
+
+.button-53:after {
+  content: '';
+  position: absolute;
+  border: 1px solid #000000;
+  bottom: 4px;
+  left: 4px;
+  width: calc(100% - 1px);
+  height: calc(100% - 1px);
+}
+
+.button-53:hover:after {
+  bottom: 2px;
+  left: 2px;
+}
+
+@media (min-width: 768px) {
+  .button-53 {
+      padding: .75rem 3rem;
+      font-size: 1.25rem;
+  }
+}
+
+
+.SBT-title {
+    font-family: 'Arial', sans-serif; /* Modern font */
+    font-size: 1.5rem; /* Adjust size for emphasis */
+    font-weight: bold; /* Bold for prominence */
+    text-align: center; /* Center the text */
+    color: #ffffff; /* White text for contrast */
+    position: relative; 
+    padding: 10px 0; /* Add spacing around text */
+    text-transform: uppercase; /* Capitalize all letters */
+    z-index: 1; /* Ensure text stays above the bar */
+  }
+
+#title-bar {
+    position: absolute;
+    top: var(--title-height, 0);
+    left: 50%;
+    transform: translate(-50%);
+    width: 100%;
+    height: 50px;
+    background-color: #4dd0e1; /* Change to desired color */
+    border-radius: 8px; /* Optional: rounded corners */
+    z-index: -1;
+}
+
+/* .SBT-title::before { */
+    /* content: ''; Empty content for the bar */
+    /* position: absolute; */
+    /* top: 0; */
+    /* left: 0; */
+    /* height: 100%; Same height as the text padding */
+    /* background-color: #4dd0e1; Match with the green theme */
+    /* z-index: -1; Place the bar behind the text */
+    /* border-radius: 8px; Rounded corners to match text style */
+    /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); Light shadow for depth */
+  /* } */
