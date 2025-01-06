@@ -14,7 +14,7 @@ export function defaultTable() {
     const tableBody = document.getElementById('table-body');
         for (let i = 0; i < 30; i++) {
             const row = document.createElement('tr');
-            for (let j = 0; j < 8; j++) {
+            for (let j = 0; j < 10; j++) {
                 const cell = document.createElement('td');
                 row.appendChild(cell);
             }
@@ -25,9 +25,10 @@ export function defaultTable() {
 defaultTable();
 
 // Get the date in desired format
-const today = new Date();
+const nextDay = new Date();
+nextDay.setDate(nextDay.getDate() + 1);
 const options = { day: '2-digit', month: 'long', year: 'numeric' };
-const formattedDate = today.toLocaleDateString('en-GB', options);
+export const formattedDate = nextDay.toLocaleDateString('en-GB', options);
 
 // Get the table element
 const table = document.getElementById("data-table");
@@ -35,7 +36,7 @@ const table = document.getElementById("data-table");
 // Create a new row for the date
 const dateRow = document.createElement("tr");
 const dateCell = document.createElement("th");
-dateCell.setAttribute("colspan", "8"); // Merge all columns for the date heading
+dateCell.setAttribute("colspan", "10"); // Merge all columns for the date heading
 dateCell.textContent = formattedDate; // Set the date text
 dateCell.classList.add("date-header"); // Add a class to the date cell
 dateRow.appendChild(dateCell);

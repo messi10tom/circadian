@@ -1,4 +1,4 @@
-import {GLOBAL_DATA_STORE, defaultTable} from './scripts.js'
+import {GLOBAL_DATA_STORE, defaultTable, formattedDate} from './scripts.js'
 import {getTable} from './utils.js'
 
 
@@ -58,7 +58,9 @@ function getStarterData(event) {
         title != "" ) {
             let data = {"Starter": starter,
                         "Title": title,
-                        "Welcome": welcome}
+                        "Welcome": welcome,
+                        "Analysis": '',
+                        "Solution": ''}
 
             STARTER_1 = starter;
             STARTER_2 = starter;
@@ -132,7 +134,9 @@ function getBusinessData(event) {
                           "Event_2": Events_2,
                           "Period_2": Period_2,
                           "Business_2": Business_2,
-                          "Sub_activity_2": Sub_activity_2
+                          "Sub_activity_2": Sub_activity_2,
+                          "Analysis": '',
+                          "Solution": ''
               }
   
               // Log the collected data
@@ -164,7 +168,9 @@ function getTODOdata(event) {
   
             let data = {"TODO": "TODO: ",
                         "Business": business,
-                        "Sub_activity": sub_activity}
+                        "Sub_activity": sub_activity,
+                        "Analysis": '',
+                        "Solution": ''}
   
             // Log the collected data
             console.log(JSON.stringify(data, null, 2));
@@ -191,7 +197,7 @@ function saveDataStore() {
     const dataStr = JSON.stringify(GLOBAL_DATA_STORE);
     const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
-    const exportFileDefaultName = 'data_store.json';
+    const exportFileDefaultName = formattedDate;
 
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -237,9 +243,7 @@ function convertToCheckBox() {
     const table = document.getElementById('data-table');
     const rows = table.rows;
     const numROWS = table.rows.length;
-    const numDataEntries = GLOBAL_DATA_STORE.length;
 
-    if (numDataEntries == 0) return
 
     for (let i = 0; i < numROWS; i++) {
 
@@ -289,14 +293,16 @@ function clearDataStore() {
     const button = document.getElementById("remove-button");
     // const table = document.getElementById('data-table');
 
-    if (button.textContent == "Remove") {
+    if (GLOBAL_DATA_STORE.length == 0) return
 
-        button.textContent = "Select";
+    if (button.textContent == "REMOVE") {
+
+        button.textContent = "SELECT";
         convertToCheckBox();
     }
     else {
    
-        button.textContent = "Remove";
+        button.textContent = "REMOVE";
         CHECKBOX_LIST.sort((a, b) => b - a);
         for (let i = 0; i < CHECKBOX_LIST.length; i++) {
             // console.log(JSON.stringify(GLOBAL_DATA_STORE, null, 2))

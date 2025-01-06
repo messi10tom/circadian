@@ -86,7 +86,7 @@ export function getTable() {
         const tableBody = document.getElementById('table-body');
         for (let i = 0; i < 5; i++) {
             const row = document.createElement('tr');
-            for (let j = 0; j < 8; j++) {
+            for (let j = 0; j < 10; j++) {
                 const cell = document.createElement('td');
                 row.appendChild(cell);
             }
@@ -105,7 +105,7 @@ export function getTable() {
 
         // Remove any class if the row has
         row.className = '';
-        for (let j = 0; j < 8; j++) {
+        for (let j = 0; j < 10; j++) {
             row.insertCell(0);
 }
         
@@ -180,9 +180,12 @@ function edit() {
         button.textContent = "SUBMIT";
 
         for (let i = 0; i < GLOBAL_DATA_STORE.length; i++) {
-            for (let j = 0; j < tableBody.rows[i].cells.length; j++) {
-
-                if (j != 0 && j != 4) {
+            for (let j = 0; j <= tableBody.rows[i].cells.length; j++) {
+            
+                if (((GLOBAL_DATA_STORE[i].isStarter && j != 0) || GLOBAL_DATA_STORE[i].isTODO && j != 0) && j <= 4) {
+                    tableBody.rows[i].cells[j].contentEditable = true;
+                }
+                else if (j != 0 && j != 4 && !GLOBAL_DATA_STORE[i].isStarter && !GLOBAL_DATA_STORE[i].isTODO) {
                     tableBody.rows[i].cells[j].contentEditable = true;
   
         }}}
@@ -202,10 +205,15 @@ function edit() {
                 if (GLOBAL_DATA_STORE[rowIndex].isStarter) {
                     if (colIndex == 0) GLOBAL_DATA_STORE[rowIndex].starterData.Title = value;
                     else if (colIndex == 1) GLOBAL_DATA_STORE[rowIndex].starterData.Welcome = value;
+                    else if (colIndex == 2) GLOBAL_DATA_STORE[rowIndex].starterData.Analysis = value;
+                    else if (colIndex == 3) GLOBAL_DATA_STORE[rowIndex].starterData.Solution = value;
+
                 }
                 else if (GLOBAL_DATA_STORE[rowIndex].isTODO) {
                     if (colIndex == 0) GLOBAL_DATA_STORE[rowIndex].TODOdata.Business = value;
                     else if (colIndex == 1) GLOBAL_DATA_STORE[rowIndex].TODOdata.Sub_activity = value;
+                    else if (colIndex == 2) GLOBAL_DATA_STORE[rowIndex].TODOdata.Analysis = value;
+                    else if (colIndex == 3) GLOBAL_DATA_STORE[rowIndex].TODOdata.Solution = value;
                 }
                 else {
                     if (colIndex == 0) GLOBAL_DATA_STORE[rowIndex].businessData.Period_1 = value;
@@ -214,6 +222,8 @@ function edit() {
                     else if (colIndex == 3) GLOBAL_DATA_STORE[rowIndex].businessData.Period_2 = value;
                     else if (colIndex == 4) GLOBAL_DATA_STORE[rowIndex].businessData.Business_2 = value;
                     else if (colIndex == 5) GLOBAL_DATA_STORE[rowIndex].businessData.Sub_activity_2 = value;
+                    else if (colIndex == 6) GLOBAL_DATA_STORE[rowIndex].starterData.Analysis = value;
+                    else if (colIndex == 7) GLOBAL_DATA_STORE[rowIndex].starterData.Solution = value;
                 }
 
             });

@@ -72,18 +72,21 @@
 
 
 #Event-1, #Event-2 {
-    width: 10%; /* Custom width for Event-1 and Event-2 */
+    width: 7%; /* Custom width for Event-1 and Event-2 */
 }
 
 #Period-1, #Period-2 {
-    width: 5%; /* Custom width for Period-1 and Period-2 */
+    width: 3.5%; /* Custom width for Period-1 and Period-2 */
 }
 
 #Business-1, #Business-2 {
-    width: 15%; /* Custom width for Business-1 and Business-2 */
+    width: 10.5%; /* Custom width for Business-1 and Business-2 */
 }
 
 #Sub-activity-1, #Sub-activity-2 {
-    width: 20%; /* Custom width for Sub-activity-1 and Sub-activity-2 */
+    width: 14%; /* Custom width for Sub-activity-1 and Sub-activity-2 */
+}
+#analysis, #solution {
+    width: 15%;
 }
 
