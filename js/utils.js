@@ -1,4 +1,5 @@
 import { GLOBAL_DATA_STORE } from "./scripts.js";
+import { reCalculateEvents } from "./basics.js";
 
 
 /**
@@ -180,12 +181,13 @@ function edit() {
         button.textContent = "SUBMIT";
 
         for (let i = 0; i < GLOBAL_DATA_STORE.length; i++) {
-            for (let j = 0; j <= tableBody.rows[i].cells.length; j++) {
+            for (let j = 0; j < tableBody.rows[i].cells.length; j++) {
             
                 if (((GLOBAL_DATA_STORE[i].isStarter && j != 0) || GLOBAL_DATA_STORE[i].isTODO && j != 0) && j <= 4) {
                     tableBody.rows[i].cells[j].contentEditable = true;
                 }
                 else if (j != 0 && j != 4 && !GLOBAL_DATA_STORE[i].isStarter && !GLOBAL_DATA_STORE[i].isTODO) {
+                    // console.log(i, j)
                     tableBody.rows[i].cells[j].contentEditable = true;
   
         }}}
@@ -216,19 +218,23 @@ function edit() {
                     else if (colIndex == 3) GLOBAL_DATA_STORE[rowIndex].TODOdata.Solution = value;
                 }
                 else {
+  
                     if (colIndex == 0) GLOBAL_DATA_STORE[rowIndex].businessData.Period_1 = value;
                     else if (colIndex == 1) GLOBAL_DATA_STORE[rowIndex].businessData.Business_1 = value;
                     else if (colIndex == 2) GLOBAL_DATA_STORE[rowIndex].businessData.Sub_activity_1 = value;
                     else if (colIndex == 3) GLOBAL_DATA_STORE[rowIndex].businessData.Period_2 = value;
                     else if (colIndex == 4) GLOBAL_DATA_STORE[rowIndex].businessData.Business_2 = value;
                     else if (colIndex == 5) GLOBAL_DATA_STORE[rowIndex].businessData.Sub_activity_2 = value;
-                    else if (colIndex == 6) GLOBAL_DATA_STORE[rowIndex].starterData.Analysis = value;
-                    else if (colIndex == 7) GLOBAL_DATA_STORE[rowIndex].starterData.Solution = value;
+                    else if (colIndex == 6) GLOBAL_DATA_STORE[rowIndex].businessData.Analysis = value;
+                    else if (colIndex == 7) GLOBAL_DATA_STORE[rowIndex].businessData.Solution = value;
                 }
 
             });
             
         });
+
+        reCalculateEvents();
+        getTable();
 }}
 
 

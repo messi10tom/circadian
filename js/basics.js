@@ -225,6 +225,43 @@ export function loadFile() {
                 const json = JSON.parse(content);
                 GLOBAL_DATA_STORE.length = 0; // Clear the array
                 GLOBAL_DATA_STORE.push(...json); // Populate the array with new data
+
+                // Updating the starter variables.
+
+                if (GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].isStarter) {
+                    STARTER_1 = GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].starterData.Starter;
+                    STARTER_2 = GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].starterData.Starter;
+                }
+                else if (!GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].isTODO) {
+                    STARTER_1 = GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].businessData.Event_1.split(' - ')[1];
+                    if (GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].businessData.Event_2) {
+                        STARTER_2 = GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].businessData.Event_2.split(' - ')[1];
+                    }
+                    else {
+                        STARTER_2 = STARTER_1;
+                    }
+                }
+                else if (GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].isTODO) {
+                    for (let i = GLOBAL_DATA_STORE.length - 2; i > 0 ; i--) {
+
+                        if (GLOBAL_DATA_STORE[i].isStarter) {
+                            STARTER_1 = GLOBAL_DATA_STORE[i].starterData.Starter;
+                            STARTER_2 = GLOBAL_DATA_STORE[i].starterData.Starter;
+                            break;
+                        }
+                        else if (!GLOBAL_DATA_STORE[i].isTODO) {
+                            STARTER_1 = GLOBAL_DATA_STORE[i].businessData.Event_1.split(' - ')[1];
+                            if (GLOBAL_DATA_STORE[i].businessData.Event_2) {
+                                STARTER_2 = GLOBAL_DATA_STORE[i].businessData.Event_2.split(' - ')[1];
+                                break;
+                            }
+                            else {
+                                STARTER_2 = STARTER_1;
+                                break;
+                            }
+                        }
+                    }
+                }
                 getTable(); // Update the table
             };
             reader.readAsText(file);
@@ -242,10 +279,9 @@ window.loadFile = loadFile;
 function convertToCheckBox() {
     const table = document.getElementById('data-table');
     const rows = table.rows;
-    const numROWS = table.rows.length;
 
 
-    for (let i = 0; i < numROWS; i++) {
+    for (let i = 0; i < rows.length; i++) {
 
         if (i < 2) {
             const cell = rows[i].insertCell(0);
@@ -256,7 +292,7 @@ function convertToCheckBox() {
             const cell = rows[i].insertCell(0);
             const checkBox = document.createElement('input');
             checkBox.setAttribute('type', 'checkbox');
-            checkBox.setAttribute('id', `checkbox-${i}`);
+            // checkBox.setAttribute('id', `checkbox-${i}`);
             checkBox.setAttribute('onclick', `getCheckBoxData(${i})`);
             cell.appendChild(checkBox);
 
@@ -306,15 +342,80 @@ function clearDataStore() {
         CHECKBOX_LIST.sort((a, b) => b - a);
         for (let i = 0; i < CHECKBOX_LIST.length; i++) {
             // console.log(JSON.stringify(GLOBAL_DATA_STORE, null, 2))
+            
             GLOBAL_DATA_STORE.splice(CHECKBOX_LIST[i] - 2, 1);
+
+            if (CHECKBOX_LIST[i] - 2 == GLOBAL_DATA_STORE.length) {
+                
+                if (GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].isStarter) {
+                    STARTER_1 = GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].Starter
+                    continue;
+                }
+                else if (!GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].isTODO) {
+
+                    let lastEvent_1 = GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].businessData.Event_1;
+                    STARTER_1 = lastEvent_1.split(' - ')[1];
+                    if (GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].businessData.Event_2 != "") {
+                        let lastEvent_2 = GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].businessData.Event_2;
+                        STARTER_2 = lastEvent_2.split(' - ')[1];
+                    }
+                }
+
+            }
 
         }
         // console.log(JSON.stringify(GLOBAL_DATA_STORE, null, 2))
         CHECKBOX_LIST = [];
         clearCheckBox();
+        reCalculateEvents();
         getTable();
     }
 
+}
+
+function sectioning(idx=1) {
+    let section = [[GLOBAL_DATA_STORE[idx], idx]];
+    for (var i = idx; i < GLOBAL_DATA_STORE.length; i++) {
+        if (GLOBAL_DATA_STORE[i].isStarter) {
+            if (section.length == 1) continue;
+            break;
+        }
+        else if(!GLOBAL_DATA_STORE[i].isTODO) {
+            section.push([GLOBAL_DATA_STORE[i], i])
+        }
+    }
+
+    return [section, i]
+}
+
+export function reCalculateEvents() {
+    var [idx, section] = [0, []];
+    while (idx < GLOBAL_DATA_STORE.length){
+        [section, idx] = sectioning(idx++);
+
+        if (section.length == 1) continue;
+
+        var starter = section[0][0].starterData.Starter;
+        for (let j = 1; j < section.length; j++) {
+            let businessData = section[j][0].businessData;
+            let period_1 = businessData.Period_1;
+            let period_2 = businessData.Period_2;
+
+            let [event_1, next_starter_1] = getEvents(starter, period_1);
+            businessData.Event_1 = event_1;
+
+            if (period_2 !== "") {
+                let [event_2, next_starter_2] = getEvents(starter, period_2);
+                businessData.Event_2 = event_2;
+                starter = next_starter_2;
+            } else {
+                businessData.Event_2 = "";
+                starter = next_starter_1;
+            }
+
+            GLOBAL_DATA_STORE[section[j][1]].businessData = businessData;
+        }
+    }
 }
 
 
