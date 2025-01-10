@@ -9,7 +9,7 @@
 /* filepath: /home/sockdologizing/GitHub/circadian/css/ui.css */
 #button-container {
   display: flex;
-  width: 20000px; /* Fixed width */
+  width: var(--title-height, 0)/5; /* Fixed width */
   gap: 10px;
   margin: 0 auto; /* Center the container */
   text-align: center; /* Center the buttons inside the container */
@@ -100,3 +100,9 @@
     /* border-radius: 8px; Rounded corners to match text style */
     /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); Light shadow for depth */
   /* } */
+
+  #data-table tr.highlighted {
+    border: 2px solid blue;
+    background-color: #F2F2F2 !important; /* Use !important to override other styles */
+    color: #000000 !important;
+}

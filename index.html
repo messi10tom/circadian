@@ -12,6 +12,7 @@
     <div id="button-container">
         <button type="button" class="button-53" id="remove-button" onclick="clearDataStore()">REMOVE</button>
         <button type="button" class="button-53" id="edit-button" onclick="edit()">EDIT</button>
+        <button type="button" class="button-53" id="undo-button" onclick="">UNDO</button>
         <button type="button" class="button-53" id="save-button" onclick="saveDataStore()">SAVE</button>
         <button type="button" class="button-53" id="load-button" onclick="loadFile()">LOAD</button>
         <input type="file" class="button-53" id="file-input" accept=".json" style="display: none;">
@@ -50,6 +51,19 @@
                 const titleHeight = titleElement.offsetHeight;
                 // Set a CSS variable with the title height
                 document.documentElement.style.setProperty('--title-height', `${titleHeight + titleBar.offsetHeight * 0.5}px`);
+            }
+
+            // Add event listeners to table rows
+            if (document.getElementById('edit-button').textContent == "SUBMIT") {
+                const tableBody = document.getElementById('table-body');
+                tableBody.addEventListener('click', function(event) {
+                    const target = event.target;
+                    if (target.tagName === 'TD') {
+                        const row = target.parentElement;
+                        const rowIndex = Array.from(row.parentElement.children).indexOf(row) + 1; // +1 to account for 1-based index
+                        
+                    }
+                });
             }
         });
     </script>

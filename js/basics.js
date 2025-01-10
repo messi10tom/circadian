@@ -373,7 +373,7 @@ function clearDataStore() {
 
 }
 
-function sectioning(idx=1) {
+function sectioning(idx) {
     let section = [[GLOBAL_DATA_STORE[idx], idx]];
     for (var i = idx; i < GLOBAL_DATA_STORE.length; i++) {
         if (GLOBAL_DATA_STORE[i].isStarter) {
@@ -395,22 +395,25 @@ export function reCalculateEvents() {
 
         if (section.length == 1) continue;
 
-        var starter = section[0][0].starterData.Starter;
+        // console.log(JSON.stringify(section, null, 2));
+        var starter_1 = section[0][0].starterData.Starter;  // 13:00
+        var starter_2 = starter_1; // 13:00
         for (let j = 1; j < section.length; j++) {
             let businessData = section[j][0].businessData;
-            let period_1 = businessData.Period_1;
-            let period_2 = businessData.Period_2;
+            let period_1 = businessData.Period_1; // 5
+            let period_2 = businessData.Period_2; // 15
 
-            let [event_1, next_starter_1] = getEvents(starter, period_1);
+            let [event_1, next_starter_1] = getEvents(starter_1, period_1); // 13:00 - 13:05, 13:05
             businessData.Event_1 = event_1;
+            starter_1 = next_starter_1;
 
-            if (period_2 !== "") {
-                let [event_2, next_starter_2] = getEvents(starter, period_2);
+            if (period_2 != "") {
+                let [event_2, next_starter_2] = getEvents(starter_2, period_2); // 13:00 - 13:15, 13:15
                 businessData.Event_2 = event_2;
-                starter = next_starter_2;
+                starter_2 = next_starter_2;
             } else {
                 businessData.Event_2 = "";
-                starter = next_starter_1;
+                starter_2 = next_starter_1; 
             }
 
             GLOBAL_DATA_STORE[section[j][1]].businessData = businessData;

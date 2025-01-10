@@ -189,6 +189,7 @@ function edit() {
                 else if (j != 0 && j != 4 && !GLOBAL_DATA_STORE[i].isStarter && !GLOBAL_DATA_STORE[i].isTODO) {
                     // console.log(i, j)
                     tableBody.rows[i].cells[j].contentEditable = true;
+                    enableRowClickLogging(true);
   
         }}}
         
@@ -201,6 +202,7 @@ function edit() {
             cells.forEach((cell, colIndex) => {
 
                 cell.contentEditable = false; // Disable editing
+                enableRowClickLogging(false);
 
                 const value = cell.textContent.trim(); // Get the edited value
 
@@ -233,6 +235,7 @@ function edit() {
             
         });
 
+        // console.log(JSON.stringify(GLOBAL_DATA_STORE, null, 2));
         reCalculateEvents();
         getTable();
 }}
@@ -242,3 +245,45 @@ function edit() {
 
 
 window.edit = edit;
+
+
+// Function to enable or disable row click logging
+function enableRowClickLogging(rec) {
+    const tableBody = document.getElementById('table-body');
+
+    if (rec) {
+        tableBody.addEventListener('click', logRowNumber);
+    } else {
+        tableBody.removeEventListener('click', logRowNumber);
+    }
+}
+
+// function highlightRow(event) {
+//     const target = event.target;
+//     if (target.tagName === 'TD') {
+//         const row = target.parentElement;
+//         row.classList.toggle('highlighted');
+//     }
+// }
+
+// Function to log the row number
+function logRowNumber(event) {
+    const target = event.target;
+    var rowIndex;
+    if (target.tagName === 'TD') {
+        const row = target.parentElement;
+        rowIndex = Array.from(row.parentElement.children).indexOf(row) + 1; // +1 to account for 1-based index
+
+        // Remove 'highlighted' class from all rows
+        const allRows = document.querySelectorAll('#table-body tr');
+        allRows.forEach(r => r.classList.remove('highlighted'));
+
+        // Add 'highlighted' class to the clicked row
+        row.classList.add('highlighted');
+
+        console.log('Row number:', rowIndex);
+    }
+}
+
+// Ensure this function is accessible globally
+window.enableRowClickLogging = enableRowClickLogging;
