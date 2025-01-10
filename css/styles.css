@@ -22,16 +22,19 @@
     border-collapse: collapse;
     /* border: 1px solid #616161; */
     width: 100%;
-    text-align: center; /* Center align text */
+    text-align: left; /* Center align text */
 }
 
 #data-table th, #data-table td {
     border: 1px solid #bebebe81;
     padding: 1.25px;
-    text-align: center; /* Center align text */
+    text-align: left; /* Center align text */
     height: 20px;
+    white-space: pre-line; /* Preserve whitespace and line breaks */
 }
-
+#data-table th {
+    text-align: center;
+}
 /* Alternate row colors */
 #data-table tr:nth-child(odd) {
     background-color: #f2f2f2; /* Light shade */
@@ -63,10 +66,13 @@
     background-color: #004561; /* Ensure this is the desired color */
     color: #ffffff; /* Change text color to white */
     font-size: 1.25em;
+    text-align: center;
 }
 
 #data-table tr.todo-row {
-    background-color: #6aa84f; 
+    background-color: #6aa84f;
+    font-weight: bold;
+    text-align: center;
 }
 
 

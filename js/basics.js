@@ -101,19 +101,15 @@ function getBusinessData(event) {
       const Business_2 = document.getElementById('business-2').value;
       const Sub_activity_2 = document.getElementById('sub-activity-2').value;
   
-  
-      if (Period_1 != "" && 
-          Business_1 != "") {
-  
-              if (Period_2 != "" &&
-                  Business_2 == "") {
-                      return;
-                  }
+  /**   We need Period_1 && Business_1 or Period_2 && Business_2 or both 
+   * Mathematically, this is equivalent to (Period_1 && Business_1) || (Period_2 && Business_2)
+  */
+      if ((Period_1 && Business_1) || (Period_2 && Business_2)) {
   
   
-  
-  
-              var [Events_1, NEXT_STARTER_1] = getEvents(STARTER_1, Period_1)
+              if (Period_1 != "") {
+                 var [Events_1, NEXT_STARTER_1] = getEvents(STARTER_1, Period_1)
+                }
   
               if (Period_2 != "") {
                   var [Events_2, NEXT_STARTER_2] = getEvents(STARTER_2, Period_2)
