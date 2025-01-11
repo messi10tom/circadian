@@ -110,6 +110,10 @@ function getBusinessData(event) {
               if (Period_1 != "") {
                  var [Events_1, NEXT_STARTER_1] = getEvents(STARTER_1, Period_1)
                 }
+            else {
+                Events_1 = "";
+
+            }
   
               if (Period_2 != "") {
                   var [Events_2, NEXT_STARTER_2] = getEvents(STARTER_2, Period_2)
@@ -122,6 +126,7 @@ function getBusinessData(event) {
   
               STARTER_1 = NEXT_STARTER_1
               STARTER_2 = NEXT_STARTER_2
+              
   
               let data = {"Event_1": Events_1,
                           "Period_1": Period_1,
