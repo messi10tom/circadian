@@ -86,7 +86,7 @@ fields = ["Period          :  ",
           "Business       :  ", 
           "Sub Activity :  "];
 ids = ["period-1", "business-1", "sub-activity-1"];
-types = ['number', 'text', 'text'];
+types = ['number', 'text', 'textarea'];
 
 createForm("form-container",
            fields,
@@ -107,7 +107,7 @@ createForm("form-container",
 fields = ["Business       :  ", 
           "Sub Activity :  "];
 ids = ["business", "sub-activity"];
-types = ['text', 'text'];
+types = ['text', 'textarea'];
 
 createForm("form-container",
     fields, 
@@ -116,3 +116,4 @@ createForm("form-container",
     "TODO",
     "getTODOdata(event)",
     2);
+

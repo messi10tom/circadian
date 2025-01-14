@@ -35,6 +35,22 @@ function getEvents(starter, period) {
 
 
 
+function getPeriod(starter, ender) {
+    
+    var [hour, min] = starter.split(":");
+    const Sdate = new Date();
+    Sdate.setHours(hour, min, 0, 0); // Set hours, minutes, seconds, and milliseconds
+
+    [hour, min] = ender.split(":");
+    const Edate = new Date();
+    Edate.setHours(hour, min, 0, 0); // Set hours, minutes, seconds, and milliseconds
+
+    // Calculate the difference in milliseconds
+    const differenceMs = Edate - Sdate;
+
+    // Convert to minutes
+    return Math.floor(differenceMs / (1000 * 60));
+}
 
 
 
@@ -94,10 +110,10 @@ function getBusinessData(event) {
     
   
   //   Get the form data
-      const Period_1 = document.getElementById('period-1').value;
+      let Period_1 = document.getElementById('period-1').value;
       const Business_1 = document.getElementById('business-1').value;
       const Sub_activity_1 = document.getElementById('sub-activity-1').value;
-      const Period_2 = document.getElementById('period-2').value;
+      let Period_2 = document.getElementById('period-2').value;
       const Business_2 = document.getElementById('business-2').value;
       const Sub_activity_2 = document.getElementById('sub-activity-2').value;
   
@@ -105,49 +121,53 @@ function getBusinessData(event) {
    * Mathematically, this is equivalent to (Period_1 && Business_1) || (Period_2 && Business_2)
   */
       if ((Period_1 && Business_1) || (Period_2 && Business_2)) {
-  
-  
-              if (Period_1 != "") {
-                 var [Events_1, NEXT_STARTER_1] = getEvents(STARTER_1, Period_1)
-                }
-            else {
-                Events_1 = "";
+        var Pdrop_1 = document.getElementById('period-1-dropdown').value;
+        var Pdrop_2 = document.getElementById('period-2-dropdown').value;
 
+        if (Period_1 != "") {
+
+            if (Pdrop_1 == "time") Period_1 = getPeriod(STARTER_1, Period_1);
+            var [Events_1, NEXT_STARTER_1] = getEvents(STARTER_1, Period_1);
+        }
+        else {
+            Events_1 = "";
+
+        }
+
+            if (Period_2 != "") {
+                if (Pdrop_2 == "time") Period_2 = getPeriod(STARTER_2, Period_2);
+                var [Events_2, NEXT_STARTER_2] = getEvents(STARTER_2, Period_2);
             }
-  
-              if (Period_2 != "") {
-                  var [Events_2, NEXT_STARTER_2] = getEvents(STARTER_2, Period_2)
-              }
-  
-              else {
-                  Events_2 = "";
-                  NEXT_STARTER_2 = NEXT_STARTER_1;
-              }
-  
-              STARTER_1 = NEXT_STARTER_1
-              STARTER_2 = NEXT_STARTER_2
-              
-  
-              let data = {"Event_1": Events_1,
-                          "Period_1": Period_1,
-                          "Business_1": Business_1,
-                          "Sub_activity_1": Sub_activity_1,
-                          "Event_2": Events_2,
-                          "Period_2": Period_2,
-                          "Business_2": Business_2,
-                          "Sub_activity_2": Sub_activity_2,
-                          "Analysis": '',
-                          "Solution": ''
-              }
-  
-              // Log the collected data
-              console.log(JSON.stringify(data, null, 2));
-              GLOBAL_DATA_STORE.push({"businessData": data,
-                                        "isStarter": false,
-                                        "isTODO": false
-              })
 
-              getTable();
+            else {
+                Events_2 = "";
+                NEXT_STARTER_2 = NEXT_STARTER_1;
+            }
+
+            STARTER_1 = NEXT_STARTER_1
+            STARTER_2 = NEXT_STARTER_2
+            
+
+            let data = {"Event_1": Events_1,
+                        "Period_1": Period_1,
+                        "Business_1": Business_1,
+                        "Sub_activity_1": Sub_activity_1,
+                        "Event_2": Events_2,
+                        "Period_2": Period_2,
+                        "Business_2": Business_2,
+                        "Sub_activity_2": Sub_activity_2,
+                        "Analysis": '',
+                        "Solution": ''
+            }
+
+            // Log the collected data
+            console.log(JSON.stringify(data, null, 2));
+            GLOBAL_DATA_STORE.push({"businessData": data,
+                                    "isStarter": false,
+                                    "isTODO": false
+            })
+
+            getTable();
       }
   
   }
@@ -343,26 +363,27 @@ function clearDataStore() {
         CHECKBOX_LIST.sort((a, b) => b - a);
         for (let i = 0; i < CHECKBOX_LIST.length; i++) {
             // console.log(JSON.stringify(GLOBAL_DATA_STORE, null, 2))
-            
-            GLOBAL_DATA_STORE.splice(CHECKBOX_LIST[i] - 2, 1);
 
-            if (CHECKBOX_LIST[i] - 2 == GLOBAL_DATA_STORE.length) {
+            console.log(CHECKBOX_LIST)
+            if (CHECKBOX_LIST[i] - 1 == GLOBAL_DATA_STORE.length) {
                 
-                if (GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].isStarter) {
-                    STARTER_1 = GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].Starter
-                    continue;
-                }
-                else if (!GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].isTODO) {
+                let lastEvent = GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 2];
+                console.log(JSON.stringify(lastEvent, null, 2));
 
-                    let lastEvent_1 = GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].businessData.Event_1;
-                    STARTER_1 = lastEvent_1.split(' - ')[1];
-                    if (GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].businessData.Event_2 != "") {
-                        let lastEvent_2 = GLOBAL_DATA_STORE[GLOBAL_DATA_STORE.length - 1].businessData.Event_2;
+                if (lastEvent.isStarter) {
+                    STARTER_1 = lastEvent.starterData.Starter
+                }
+                else if (!lastEvent.isTODO) {
+                    STARTER_1 = lastEvent.businessData.Event_1.split(' - ')[1];
+                    if (lastEvent.businessData.Event_2 != "") {
+                        let lastEvent_2 = lastEvent.businessData.Event_2;
                         STARTER_2 = lastEvent_2.split(' - ')[1];
                     }
                 }
 
             }
+
+            GLOBAL_DATA_STORE.splice(CHECKBOX_LIST[i] - 2, 1);
 
         }
         // console.log(JSON.stringify(GLOBAL_DATA_STORE, null, 2))

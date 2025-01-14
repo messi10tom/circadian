@@ -34,17 +34,52 @@ export function createForm(container,
 
     // Function to create label and input elements
     function createLabelInput(labelText, inputId, inputType) {
+        if (labelText.includes("Period")) {
+
+            var dropdown = document.createElement('select');
+            dropdown.setAttribute('id', `${inputId}-dropdown`);
+            const optionPeriod = document.createElement('option');
+            optionPeriod.value = 'period';
+            optionPeriod.text = 'Period';
+            const optionTime = document.createElement('option');
+            optionTime.value = 'time';
+            optionTime.text = 'Time';
+
+            // Add event listener to dropdown
+            // dropdown.addEventListener('change', function() {
+            //     if (dropdown.value === 'period') {
+            //         inputType = 'number';
+            //     } else if (dropdown.value === 'time') {
+            //         inputType = 'time';
+            //     }
+            // });
+
+            dropdown.appendChild(optionPeriod);
+            dropdown.appendChild(optionTime);
+        }
         const label = document.createElement('label');
         label.setAttribute('for', inputId);
 
         // Replace spaces with non-breaking spaces
         label.innerHTML = labelText.replace(/ /g, '&nbsp;');
+
         
-        const input = document.createElement('input');
-        input.setAttribute('type', inputType);
+        if (inputType === 'textarea') {
+            var input = document.createElement('textarea');
+            input.setAttribute('rows', '4'); // Set the number of visible text lines
+            input.setAttribute('cols', '30'); // Set the width of the text area
+        } else {
+            var input = document.createElement('input');
+            input.setAttribute('type', inputType);
+        }
+
         input.setAttribute('id', inputId);
 
-        form.appendChild(label);
+        if (dropdown) {
+            form.appendChild(dropdown);
+        } else {
+            form.appendChild(label);
+        }
         form.appendChild(input);
         form.appendChild(document.createElement('br'));
         form.appendChild(document.createElement('br'));
@@ -117,6 +152,8 @@ export function getTable() {
             row.cells[0].textContent = data.starterData.Starter;
             row.cells[1].textContent = data.starterData.Title;
             row.cells[2].textContent = data.starterData.Welcome;
+            row.cells[3].textContent = data.starterData.Analysis;
+            row.cells[4].textContent = data.starterData.Solution;
 
             row.cells[1].colSpan = 3;
             row.cells[2].colSpan = 4;
@@ -134,6 +171,8 @@ export function getTable() {
             row.cells[0].textContent = data.TODOdata.TODO;
             row.cells[1].textContent = data.TODOdata.Business;
             row.cells[2].textContent = data.TODOdata.Sub_activity;
+            row.cells[3].textContent = data.TODOdata.Analysis;
+            row.cells[4].textContent = data.TODOdata.Solution;
 
             row.cells[1].colSpan = 3;
             row.cells[2].colSpan = 4;
@@ -164,6 +203,8 @@ export function getTable() {
             row.cells[5].textContent = data.businessData.Period_2;
             row.cells[6].textContent = data.businessData.Business_2;
             row.cells[7].textContent = data.businessData.Sub_activity_2;
+            row.cells[8].textContent = data.businessData.Analysis;
+            row.cells[9].textContent = data.businessData.Solution;
         }
     }
 }
@@ -220,7 +261,7 @@ function edit() {
                     else if (colIndex == 3) GLOBAL_DATA_STORE[rowIndex].TODOdata.Solution = value;
                 }
                 else {
-  
+                    // console.log(rowIndex, colIndex, value);
                     if (colIndex == 0) GLOBAL_DATA_STORE[rowIndex].businessData.Period_1 = value;
                     else if (colIndex == 1) GLOBAL_DATA_STORE[rowIndex].businessData.Business_1 = value;
                     else if (colIndex == 2) GLOBAL_DATA_STORE[rowIndex].businessData.Sub_activity_1 = value;
@@ -229,6 +270,7 @@ function edit() {
                     else if (colIndex == 5) GLOBAL_DATA_STORE[rowIndex].businessData.Sub_activity_2 = value;
                     else if (colIndex == 6) GLOBAL_DATA_STORE[rowIndex].businessData.Analysis = value;
                     else if (colIndex == 7) GLOBAL_DATA_STORE[rowIndex].businessData.Solution = value;
+
                 }
 
             });

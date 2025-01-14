@@ -65,6 +65,30 @@
                     }
                 });
             }
+            
+            // Function to handle dropdown changes
+            function handleDropdownChange(dropdownId, inputId) {
+                const dropdown = document.getElementById(dropdownId);
+                dropdown.addEventListener('change', function() {
+                    const selectedValue = dropdown.value;
+                    const inputElement = document.getElementById(inputId);
+
+                    if (inputElement) {
+                        if (selectedValue === 'period') {
+                            inputElement.setAttribute('type', 'number');
+                        } else {
+                            inputElement.setAttribute('type', 'time');
+                        }
+                    } else {
+                        console.error(`Element with ID "${inputId}" not found.`);
+                    }
+                });
+            }
+
+            // Apply the function to both dropdowns
+            handleDropdownChange('period-1-dropdown', 'period-1');
+            handleDropdownChange('period-2-dropdown', 'period-2');
+            
         });
     </script>
 
