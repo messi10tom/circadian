@@ -2,26 +2,18 @@
     display: flex;
     justify-content: left;
     align-items: top;
-    gap: 50px;
+    gap: 30px;
     
 }
 
-#form-container #starter {
-    width: 18em;
-}
-
-#form-container #title {
-    width: 18em;
-}
-
-#form-container #welcome {
-    width: 18em;
+.form-class {
+    width: 15em;
 }
 
 #data-table {
     border-collapse: collapse;
     /* border: 1px solid #616161; */
-    width: 100%;
+    width: 70vw;
     text-align: left; /* Center align text */
 }
 

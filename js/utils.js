@@ -1,5 +1,8 @@
 import { GLOBAL_DATA_STORE } from "./scripts.js";
-import { reCalculateEvents } from "./basics.js";
+import { reCalculateEvents, setEditMode } from "./basics.js";
+
+
+var [ROW, CELL] = [0, 1];
 
 
 /**
@@ -80,6 +83,7 @@ export function createForm(container,
         } else {
             form.appendChild(label);
         }
+        input.classList.add("form-class");
         form.appendChild(input);
         form.appendChild(document.createElement('br'));
         form.appendChild(document.createElement('br'));
@@ -111,7 +115,7 @@ export function createForm(container,
 }
 
 
-export function getTable() {
+export function getTable(editMode=false) {
 
     const table = document.getElementById("data-table");
     const numROWS = table.rows.length;
@@ -163,6 +167,14 @@ export function getTable() {
                     row.deleteCell(3);
                 }
             }
+
+            if (editMode) {
+                for (let i = 0; i < row.cells.length; i++) {
+                    row.cells[i].contentEditable = true;
+                }
+                highlightedRow(ROW, CELL);
+            }
+
         }
         else if (data.isTODO) {
 
@@ -181,6 +193,13 @@ export function getTable() {
                 for (let j = 3; j <= 7; j++) {
                     row.deleteCell(3);
                 }
+            }
+
+            if (editMode) {
+                for (let i = 0; i < row.cells.length; i++) {
+                    row.cells[i].contentEditable = true;
+                }
+                highlightedRow(ROW, CELL);
             }
 
             // row.cells[0].textContent = data.todoData.TODO;
@@ -205,6 +224,13 @@ export function getTable() {
             row.cells[7].textContent = data.businessData.Sub_activity_2;
             row.cells[8].textContent = data.businessData.Analysis;
             row.cells[9].textContent = data.businessData.Solution;
+
+            if (editMode) {
+                for (let i = 0; i < row.cells.length; i++) {
+                    row.cells[i].contentEditable = true;
+                }
+                highlightedRow(ROW, CELL);
+            }
         }
     }
 }
@@ -220,6 +246,7 @@ function edit() {
     
     if (button.textContent == "EDIT") {
         button.textContent = "SUBMIT";
+        setEditMode(true);
 
         for (let i = 0; i < GLOBAL_DATA_STORE.length; i++) {
             for (let j = 0; j < tableBody.rows[i].cells.length; j++) {
@@ -230,20 +257,20 @@ function edit() {
                 else if (j != 0 && j != 4 && !GLOBAL_DATA_STORE[i].isStarter && !GLOBAL_DATA_STORE[i].isTODO) {
                     // console.log(i, j)
                     tableBody.rows[i].cells[j].contentEditable = true;
-                    enableRowClickLogging(true);
   
         }}}
+        enableRowClickLogging(true);
         
     }
     else {
         button.textContent = "EDIT";
+        setEditMode(false);
         Array.from(tableBody.rows).forEach((row, rowIndex) => {
             const cells = row.querySelectorAll('td[contenteditable]');
             // console.log(`Row ${index + 1}: ${Array.from(cells).map(cell => cell.textContent).join(', ')}`);
             cells.forEach((cell, colIndex) => {
 
                 cell.contentEditable = false; // Disable editing
-                enableRowClickLogging(false);
 
                 const value = cell.textContent.trim(); // Get the edited value
 
@@ -276,10 +303,11 @@ function edit() {
             });
             
         });
+        enableRowClickLogging(false);
 
         // console.log(JSON.stringify(GLOBAL_DATA_STORE, null, 2));
         reCalculateEvents();
-        getTable();
+        getTable(false);
 }}
 
 
@@ -288,44 +316,94 @@ function edit() {
 
 window.edit = edit;
 
-
 // Function to enable or disable row click logging
 function enableRowClickLogging(rec) {
     const tableBody = document.getElementById('table-body');
 
+    const logRowNumber = (event = null, RowNumber = null, CellNumber = null) => {
+
+        if (event) {
+            const target = event.target;
+            if (target.tagName === 'TD') {
+
+                const row = target.parentElement;
+
+                const rowIndex = Array.from(row.parentElement.children).indexOf(row); // +1 to account for 1-based index
+                const cellIndex = Array.from(row.children).indexOf(target); // 1-based index for cell
+
+                ROW = rowIndex;
+                CELL = cellIndex;
+
+                highlightedRow(rowIndex, cellIndex);
+        }
+        }
+        else if (RowNumber != null && CellNumber != null) {
+
+            highlightedRow(RowNumber, CellNumber);
+        }
+    };
+
+    const keyAnalyzer = (event) => {
+        switch (event.key) {
+            case 'ArrowUp':
+                if (event.ctrlKey) {
+                    ROW--;
+                    if (ROW < 0) ROW = tableBody.rows.length - 1;
+                }
+                break;
+            case 'ArrowDown':
+                if (event.ctrlKey) {
+                    ROW++;
+                    if (ROW >= tableBody.rows.length) ROW = 0;
+                }
+                break;
+            case 'ArrowLeft':
+                if (event.ctrlKey) {
+                    CELL--;
+                    if (CELL < 0) CELL = tableBody.rows[ROW].cells.length - 1;
+                    else if (CELL == 4) CELL--;
+                }
+                break;
+            case 'ArrowRight':
+                if (event.ctrlKey) {
+                    CELL++;
+                    if (CELL >= tableBody.rows[ROW].cells.length) CELL = 0;
+                    else if (CELL == 4) CELL++;
+                }
+                break;
+        }
+    
+        logRowNumber(null, ROW, CELL);
+    };
+
+
     if (rec) {
+        highlightedRow(ROW, CELL);
+        
         tableBody.addEventListener('click', logRowNumber);
+        document.addEventListener('keydown', keyAnalyzer);
     } else {
         tableBody.removeEventListener('click', logRowNumber);
+        document.removeEventListener('keydown', keyAnalyzer);
     }
 }
 
-// function highlightRow(event) {
-//     const target = event.target;
-//     if (target.tagName === 'TD') {
-//         const row = target.parentElement;
-//         row.classList.toggle('highlighted');
-//     }
-// }
+function highlightedRow(RowNumber, cellNumber) {
+    // console.log(RowNumber, cellNumber);
+    const tableBody = document.getElementById('table-body');
 
-// Function to log the row number
-function logRowNumber(event) {
-    const target = event.target;
-    var rowIndex;
-    if (target.tagName === 'TD') {
-        const row = target.parentElement;
-        rowIndex = Array.from(row.parentElement.children).indexOf(row) + 1; // +1 to account for 1-based index
+    // Remove 'highlighted' class from all rows
+    Array.from(tableBody.rows).forEach(r => r.classList.remove('highlighted'));
 
-        // Remove 'highlighted' class from all rows
-        const allRows = document.querySelectorAll('#table-body tr');
-        allRows.forEach(r => r.classList.remove('highlighted'));
+    // Add 'highlighted' class to the clicked row
+    const row = tableBody.rows[RowNumber];
+    const cell = row.cells[cellNumber];
 
-        // Add 'highlighted' class to the clicked row
-        row.classList.add('highlighted');
-
-        console.log('Row number:', rowIndex);
-    }
+    row.classList.add('highlighted');
+    cell.focus();
 }
+
+
 
 // Ensure this function is accessible globally
 window.enableRowClickLogging = enableRowClickLogging;

@@ -6,7 +6,9 @@ import {getTable} from './utils.js'
 // Global Variables
 var STARTER_1;
 var STARTER_2;
+export var EDITMODE = false;
 
+export function setEditMode(value) {EDITMODE = value;}
 
 
 
@@ -88,7 +90,7 @@ function getStarterData(event) {
                                     "isTODO": false
             })
 
-            getTable();
+            getTable(EDITMODE);
         }
 }
 
@@ -167,7 +169,7 @@ function getBusinessData(event) {
                                     "isTODO": false
             })
 
-            getTable();
+            getTable(EDITMODE);
       }
   
   }
@@ -200,7 +202,7 @@ function getTODOdata(event) {
                                     "isTODO": true
             })
 
-            getTable();
+            getTable(EDITMODE);
         }
   }
 
@@ -215,10 +217,15 @@ window.getTODOdata = getTODOdata;
 function saveDataStore() {
     if (GLOBAL_DATA_STORE.length == 0) return;
 
-    const dataStr = JSON.stringify(GLOBAL_DATA_STORE);
+    const dataToSave = {"Date": document.getElementById("date-cell").textContent,
+                        "ScheduleRow": GLOBAL_DATA_STORE,
+                        "NotePad": document.getElementById("note-pad").value
+    };
+
+    const dataStr = JSON.stringify(dataToSave);
     const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
-    const exportFileDefaultName = formattedDate;
+    const exportFileDefaultName = dataToSave["Date"];
 
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -245,7 +252,10 @@ export function loadFile() {
                 const content = e.target.result;
                 const json = JSON.parse(content);
                 GLOBAL_DATA_STORE.length = 0; // Clear the array
-                GLOBAL_DATA_STORE.push(...json); // Populate the array with new data
+
+                GLOBAL_DATA_STORE.push(...json["ScheduleRow"]); // Populate the array with new data
+                document.getElementById("date-cell").textContent = json["Date"];
+                document.getElementById("note-pad").value = json["NotePad"];
 
                 // Updating the starter variables.
 
@@ -283,7 +293,7 @@ export function loadFile() {
                         }
                     }
                 }
-                getTable(); // Update the table
+                getTable(EDITMODE); // Update the table
             };
             reader.readAsText(file);
         }
@@ -390,7 +400,7 @@ function clearDataStore() {
         CHECKBOX_LIST = [];
         clearCheckBox();
         reCalculateEvents();
-        getTable();
+        getTable(EDITMODE);
     }
 
 }

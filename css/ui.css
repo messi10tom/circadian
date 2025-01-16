@@ -57,12 +57,12 @@
   left: 2px;
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   .button-53 {
       padding: .75rem 3rem;
       font-size: 1.25rem;
   }
-}
+} */
 
 
 .SBT-title {
@@ -105,4 +105,15 @@
     border: 2px solid blue;
     background-color: #F2F2F2 !important; /* Use !important to override other styles */
     color: #000000 !important;
+}
+
+#windows {
+    display: flex;
+    /* flex-direction: column; */
+    gap: 3px;
+}
+
+#note-pad {
+  width: 29vw;
+  height: 100%;
 }

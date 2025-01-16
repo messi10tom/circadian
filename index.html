@@ -8,40 +8,51 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <!-- Main buttons on top of the UI, these are for basic editing functions -->
-    <div id="button-container">
-        <button type="button" class="button-53" id="remove-button" onclick="clearDataStore()">REMOVE</button>
-        <button type="button" class="button-53" id="edit-button" onclick="edit()">EDIT</button>
-        <button type="button" class="button-53" id="undo-button" onclick="">UNDO</button>
-        <button type="button" class="button-53" id="save-button" onclick="saveDataStore()">SAVE</button>
-        <button type="button" class="button-53" id="load-button" onclick="loadFile()">LOAD</button>
-        <input type="file" class="button-53" id="file-input" accept=".json" style="display: none;">
+    <div id="windows">
+        <div id="table-and-button-container">
+            <!-- Main buttons on top of the UI, these are for basic editing functions -->
+            <div id="button-container">
+                <button type="button" class="button-53" id="remove-button" onclick="clearDataStore()">REMOVE</button>
+                <button type="button" class="button-53" id="edit-button" onclick="edit()">EDIT</button>
+                <button type="button" class="button-53" id="undo-button" onclick="">UNDO</button>
+                <button type="button" class="button-53" id="save-button" onclick="saveDataStore()">SAVE</button>
+                <button type="button" class="button-53" id="load-button" onclick="loadFile()">LOAD</button>
+                <input type="file" class="button-53" id="file-input" accept=".json" style="display: none;">
+            </div>
+            <div id="form-container">
+                <div id="title-bar"></div>
+            </div>
+            <br>
+            <div id="table-container">
+                <table id="data-table">
+                    <thead>
+                        <tr id="headline-table" >
+                            <th id="Event-1">Event</th>
+                            <th id="Period-1">Period</th>
+                            <th id="Business-1">Business</th>
+                            <th id="Sub-activity-1">Sub Activity</th>
+                            <th id="Event-2">Event</th>
+                            <th id="Period-2">Period</th>
+                            <th id="Business-2">Business</th>
+                            <th id="Sub-activity-2">Sub Activity</th>
+                            <th id="analysis">Analysis</th>
+                            <th id="solution">Solution</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Rows will be added here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+    
+        </div>
+        <div id="note-container">
+            <!-- <textarea name="NotePad" id="note-pad"></textarea> -->
+            <textarea name="NotePad" id="note-pad" placeholder="  Notes" style="color: grey;"></textarea>
+        </div>
+        
     </div>
-    <div id="form-container">
-        <div id="title-bar"></div>
-    </div>
-    <br>
-    <div id="table-container">
-        <table id="data-table">
-            <thead>
-                <tr id="headline-table" >
-                    <th id="Event-1">Event</th>
-                    <th id="Period-1">Period</th>
-                    <th id="Business-1">Business</th>
-                    <th id="Sub-activity-1">Sub Activity</th>
-                    <th id="Event-2">Event</th>
-                    <th id="Period-2">Period</th>
-                    <th id="Business-2">Business</th>
-                    <th id="Sub-activity-2">Sub Activity</th>
-                    <th id="analysis">Analysis</th>
-                    <th id="solution">Solution</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-                <!-- Rows will be added here by JavaScript -->
-            </tbody>
-        </table>
-    </div>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const titleElement = document.querySelector('.SBT-title');
@@ -90,6 +101,7 @@
             handleDropdownChange('period-2-dropdown', 'period-2');
             
         });
+        
     </script>
 
   <!-- Custom Script -->
