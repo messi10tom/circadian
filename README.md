@@ -92,4 +92,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 Thank you for exploring Circadian! Your feedback and suggestions are invaluable. Feel free to reach out or contribute to the project to make it even better.
-

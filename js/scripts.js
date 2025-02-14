@@ -1,7 +1,6 @@
 import { createForm } from './utils.js';
 
 export var GLOBAL_DATA_STORE = [];
-
 /**
  * Nomenclature:
  * - Starter: The time at which the schedule starts.
@@ -30,20 +29,8 @@ nextDay.setDate(nextDay.getDate() + 1);
 const options = { day: '2-digit', month: 'long', year: 'numeric' };
 export var formattedDate = nextDay.toLocaleDateString('en-GB', options);
 
-// Get the table element
-const table = document.getElementById("data-table");
-
-// Create a new row for the date
-const dateRow = document.createElement("tr");
-const dateCell = document.createElement("th");
-dateCell.setAttribute("colspan", "10"); // Merge all columns for the date heading
+const dateCell = document.getElementById("date-cell");
 dateCell.textContent = formattedDate; // Set the date text
-dateCell.classList.add("date-header"); // Add a class to the date cell
-dateCell.id = "date-cell";
-dateRow.appendChild(dateCell);
-
-// Insert the date row at the top of the table header
-table.querySelector("thead").prepend(dateRow);
 
 
 /**

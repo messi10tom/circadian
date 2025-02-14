@@ -82,9 +82,15 @@
 }
 
 #Sub-activity-1, #Sub-activity-2 {
-    width: 14%; /* Custom width for Sub-activity-1 and Sub-activity-2 */
+    width: 21.5%; /* Custom width for Sub-activity-1 and Sub-activity-2 */
 }
 #analysis, #solution {
     width: 15%;
 }
 
+#Sub-activity-2 {
+    width: 7%;
+}
+#Business-2 {
+    width: 7%; /* Custom width for Business-1 and Business-2 */
+}

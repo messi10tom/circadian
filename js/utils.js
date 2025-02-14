@@ -1,8 +1,12 @@
 import { GLOBAL_DATA_STORE } from "./scripts.js";
-import { reCalculateEvents, setEditMode } from "./basics.js";
+import { reCalculateEvents, setEditMode, SAVED } from "./basics.js";
 
 
-var [ROW, CELL] = [0, 1];
+var [CELL, FOCUS] = [1, true];
+export var ROW = 0;
+
+function setFOCUS(focus) {FOCUS = focus};
+window.setFOCUS = setFOCUS;
 
 
 /**
@@ -153,6 +157,8 @@ export function getTable(editMode=false) {
 
             row.classList.add("starter-row");
 
+            // console.log(JSON.stringify(GLOBAL_DATA_STORE, null, 2));
+
             row.cells[0].textContent = data.starterData.Starter;
             row.cells[1].textContent = data.starterData.Title;
             row.cells[2].textContent = data.starterData.Welcome;
@@ -162,9 +168,11 @@ export function getTable(editMode=false) {
             row.cells[1].colSpan = 3;
             row.cells[2].colSpan = 4;
 
-            if (row.cells.length > 3) {
-                for (let j = 3; j <= 7; j++) {
-                    row.deleteCell(3);
+
+
+            if (row.cells.length > 5) {
+                for (let j = 5; j < 10; j++) {
+                    row.deleteCell(5);
                 }
             }
 
@@ -251,8 +259,21 @@ function edit() {
         for (let i = 0; i < GLOBAL_DATA_STORE.length; i++) {
             for (let j = 0; j < tableBody.rows[i].cells.length; j++) {
             
-                if (((GLOBAL_DATA_STORE[i].isStarter && j != 0) || GLOBAL_DATA_STORE[i].isTODO && j != 0) && j <= 4) {
-                    tableBody.rows[i].cells[j].contentEditable = true;
+                if (((GLOBAL_DATA_STORE[i].isStarter ) || GLOBAL_DATA_STORE[i].isTODO && j != 0) && j <= 4) {
+                    if (j == 0) {
+                        const timeInput = document.createElement('input');
+
+                        timeInput.setAttribute('type', 'time');
+                        timeInput.setAttribute('value', GLOBAL_DATA_STORE[i].starterData.Starter);
+                        timeInput.id = `time-input-${i}`;
+                        tableBody.rows[i].cells[j].textContent = '';
+                        tableBody.rows[i].cells[j].contentEditable = true;
+                        tableBody.rows[i].cells[j].appendChild(timeInput);
+                    }
+                    else{
+                        tableBody.rows[i].cells[j].contentEditable = true;
+                    }
+                    
                 }
                 else if (j != 0 && j != 4 && !GLOBAL_DATA_STORE[i].isStarter && !GLOBAL_DATA_STORE[i].isTODO) {
                     // console.log(i, j)
@@ -260,35 +281,55 @@ function edit() {
   
         }}}
         enableRowClickLogging(true);
+
+        const dateCell = document.getElementById("date-cell");
+        var input = document.createElement('input');
+
+        dateCell.textContent = '';
+        input.setAttribute('type', "date");
+        input.setAttribute('id', "date-picker");
+
+        const nextDay = new Date();
+        nextDay.setDate(nextDay.getDate() + 1);
+
+        input.setAttribute('value', nextDay.toISOString().slice(0, 10));
+        dateCell.appendChild(input);
+
         
     }
     else {
         button.textContent = "EDIT";
         setEditMode(false);
+
         Array.from(tableBody.rows).forEach((row, rowIndex) => {
             const cells = row.querySelectorAll('td[contenteditable]');
-            // console.log(`Row ${index + 1}: ${Array.from(cells).map(cell => cell.textContent).join(', ')}`);
+            
             cells.forEach((cell, colIndex) => {
 
                 cell.contentEditable = false; // Disable editing
+                // colIndex = colIndex - 1;
 
                 const value = cell.textContent.trim(); // Get the edited value
 
                 if (GLOBAL_DATA_STORE[rowIndex].isStarter) {
-                    if (colIndex == 0) GLOBAL_DATA_STORE[rowIndex].starterData.Title = value;
-                    else if (colIndex == 1) GLOBAL_DATA_STORE[rowIndex].starterData.Welcome = value;
-                    else if (colIndex == 2) GLOBAL_DATA_STORE[rowIndex].starterData.Analysis = value;
-                    else if (colIndex == 3) GLOBAL_DATA_STORE[rowIndex].starterData.Solution = value;
-
+                    // console.log("Row Index: ", rowIndex, "\nCol Index: ", colIndex, "\nValue: ", value);
+                    // console.log(JSON.stringify(GLOBAL_DATA_STORE, null, 2));
+                    if (colIndex == 0) GLOBAL_DATA_STORE[rowIndex].starterData.Starter = document.getElementById(`time-input-${rowIndex}`).value;
+                    else if (colIndex == 1) GLOBAL_DATA_STORE[rowIndex].starterData.Title = value;
+                    else if (colIndex == 2) GLOBAL_DATA_STORE[rowIndex].starterData.Welcome = value;
+                    else if (colIndex == 3) GLOBAL_DATA_STORE[rowIndex].starterData.Analysis = value;
+                    else if (colIndex == 4) GLOBAL_DATA_STORE[rowIndex].starterData.Solution = value;
+                    // console.log(JSON.stringify(GLOBAL_DATA_STORE, null, 2));
                 }
                 else if (GLOBAL_DATA_STORE[rowIndex].isTODO) {
+                    
                     if (colIndex == 0) GLOBAL_DATA_STORE[rowIndex].TODOdata.Business = value;
                     else if (colIndex == 1) GLOBAL_DATA_STORE[rowIndex].TODOdata.Sub_activity = value;
                     else if (colIndex == 2) GLOBAL_DATA_STORE[rowIndex].TODOdata.Analysis = value;
                     else if (colIndex == 3) GLOBAL_DATA_STORE[rowIndex].TODOdata.Solution = value;
                 }
-                else {
-                    // console.log(rowIndex, colIndex, value);
+                else if (colIndex >= 0) {
+                    // console.log("Row Index: ", rowIndex, "\nCol Index: ", colIndex, "\nValue: ", value);
                     if (colIndex == 0) GLOBAL_DATA_STORE[rowIndex].businessData.Period_1 = value;
                     else if (colIndex == 1) GLOBAL_DATA_STORE[rowIndex].businessData.Business_1 = value;
                     else if (colIndex == 2) GLOBAL_DATA_STORE[rowIndex].businessData.Sub_activity_1 = value;
@@ -297,12 +338,25 @@ function edit() {
                     else if (colIndex == 5) GLOBAL_DATA_STORE[rowIndex].businessData.Sub_activity_2 = value;
                     else if (colIndex == 6) GLOBAL_DATA_STORE[rowIndex].businessData.Analysis = value;
                     else if (colIndex == 7) GLOBAL_DATA_STORE[rowIndex].businessData.Solution = value;
+                    // console.log("Row Index: ", rowIndex, "\nCol Index: ", colIndex, "\nValue: ", value);
 
                 }
 
             });
             
         });
+
+        const datePicker = document.getElementById('date-picker');
+        const dateCell = document.getElementById('date-cell');
+        const selectedDate = datePicker.value;
+
+        if (selectedDate) {
+            const dateObject = new Date(selectedDate); // Convert to Date object
+            const options = { day: '2-digit', month: 'long', year: 'numeric' };
+            dateCell.textContent = dateObject.toLocaleDateString('en-US', options);
+        }
+
+        // console.log(JSON.stringify(GLOBAL_DATA_STORE, null, 2));
         enableRowClickLogging(false);
 
         // console.log(JSON.stringify(GLOBAL_DATA_STORE, null, 2));
@@ -400,10 +454,27 @@ function highlightedRow(RowNumber, cellNumber) {
     const cell = row.cells[cellNumber];
 
     row.classList.add('highlighted');
-    cell.focus();
+    if (FOCUS) cell.focus();
 }
 
 
 
 // Ensure this function is accessible globally
 window.enableRowClickLogging = enableRowClickLogging;
+
+
+export function checkEdicted() {
+    const dateCell = document.getElementById("date-cell");
+
+    if (SAVED != GLOBAL_DATA_STORE) {
+        if (dateCell.textContent.slice(-1) !== '*') {
+            dateCell.textContent += "*";
+        }
+    }
+    else{
+        if (dateCell.textContent.slice(-1) === '*') {
+            dateCell.textContent = dateCell.textContent.slice(0, -1);
+        }
+        return;
+    }
+}

@@ -6,6 +6,7 @@
     <title>Circadian</title>
     <link rel="stylesheet" href="css/ui.css">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/notepad.css">
 </head>
 <body>
     <div id="windows">
@@ -26,6 +27,7 @@
             <div id="table-container">
                 <table id="data-table">
                     <thead>
+                        <tr><th colspan="10" class="date-header" id="date-cell"></th></tr>
                         <tr id="headline-table" >
                             <th id="Event-1">Event</th>
                             <th id="Period-1">Period</th>
@@ -44,11 +46,18 @@
                     </tbody>
                 </table>
             </div>
-    
+
         </div>
         <div id="note-container">
-            <!-- <textarea name="NotePad" id="note-pad"></textarea> -->
-            <textarea name="NotePad" id="note-pad" placeholder="  Notes" style="color: grey;"></textarea>
+            <select id="category">
+                <!-- Different tags will be added here -->
+            </select>
+            
+            <textarea id="textInput" placeholder="TODO: Enter your text here..."></textarea>
+            <div id="output">
+                <h3>Stored Entries</h3>
+                <ul id="entries"></ul>
+            </div>
         </div>
         
     </div>
@@ -99,6 +108,21 @@
             // Apply the function to both dropdowns
             handleDropdownChange('period-1-dropdown', 'period-1');
             handleDropdownChange('period-2-dropdown', 'period-2');
+
+            // notePad.addEventListener('keydown', (event) => {
+            //     if (event.key === 'Tab') {
+            //         event.preventDefault();
+
+            //         const start = notePad.selectionStart;
+            //         const end = notePad.selectionEnd;
+
+            //         // Set textarea value to: text before caret + tab + text after caret
+            //         notePad.value = notePad.value.substring(0, start) + '\t' + notePad.value.substring(end);
+
+            //         // Put caret at right position again
+            //         notePad.selectionStart = notePad.selectionEnd = start + 1;
+            //     }
+            // });
             
         });
         
@@ -108,6 +132,7 @@
   <script type="module" src="js/basics.js"></script>
   <script type="module" src="js/utils.js"></script>
   <script type="module" src="js/scripts.js"></script>
+  <script type="module" src="js/notepad.js"></script>
 
 </body>
 </html>

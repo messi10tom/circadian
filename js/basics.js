@@ -1,5 +1,6 @@
-import {GLOBAL_DATA_STORE, defaultTable, formattedDate} from './scripts.js'
-import {getTable} from './utils.js'
+import {GLOBAL_DATA_STORE, defaultTable} from './scripts.js'
+import {getTable, ROW, checkEdicted} from './utils.js'
+import {CATEGORIES, displayEntries} from './notepad.js'
 
 
 
@@ -26,9 +27,8 @@ function getEvents(starter, period) {
     min = parseInt(min, 10);
     var time_min = hour * 60 + min + parseInt(period, 10);
 
-
     hour = Math.floor(time_min / 60) % 24;
-    min = time_min - hour * 60;
+    min = (time_min - hour * 60) % 60;
 
     time_min = `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
 
@@ -85,13 +85,23 @@ function getStarterData(event) {
 
             // Log the collected data
             console.log(JSON.stringify(data, null, 2));
-            GLOBAL_DATA_STORE.push({"starterData": data,
-                                    "isStarter": true,
-                                    "isTODO": false
-            })
+            if (EDITMODE && ROW <= GLOBAL_DATA_STORE.length) {
+                GLOBAL_DATA_STORE.splice(ROW + 1, 0, {"starterData": data,
+                                                    "isStarter": true,
+                                                    "isTODO": false
+                                                })
+            }
+            else {
+                GLOBAL_DATA_STORE.push({"starterData": data,
+                                        "isStarter": true,
+                                        "isTODO": false
+                })
+            }
 
             getTable(EDITMODE);
         }
+
+    checkEdicted();
 }
 
 
@@ -129,7 +139,40 @@ function getBusinessData(event) {
         if (Period_1 != "") {
 
             if (Pdrop_1 == "time") Period_1 = getPeriod(STARTER_1, Period_1);
-            var [Events_1, NEXT_STARTER_1] = getEvents(STARTER_1, Period_1);
+            if (EDITMODE == false || ROW == GLOBAL_DATA_STORE.length) {
+                var [Events_1, NEXT_STARTER_1] = getEvents(STARTER_1, Period_1);
+            }
+            else {
+                if (GLOBAL_DATA_STORE[ROW].isStarter) {
+                    let starter = GLOBAL_DATA_STORE[ROW].starterData.Starter;
+                    var [Events_1, NEXT_STARTER_1] = getEvents(starter, Period_1);
+                    NEXT_STARTER_1 = null;
+                }
+                else if (GLOBAL_DATA_STORE[ROW].isTODO) {
+                    for (let i = ROW; i >= 0; i--) {
+                        if (GLOBAL_DATA_STORE[i].isStarter) {
+                            let starter = GLOBAL_DATA_STORE[i].starterData.Starter;
+                            var [Events_1, NEXT_STARTER_1] = getEvents(starter, Period_1);
+                            NEXT_STARTER_1 = null;
+                            break;
+                        }
+                        else if (!GLOBAL_DATA_STORE[i].isTODO && !GLOBAL_DATA_STORE[i].isStarter) {
+                            let starter = GLOBAL_DATA_STORE[i].businessData.Event_1.split(' - ')[1];
+                            var [Events_1, NEXT_STARTER_1] = getEvents(starter, Period_1);
+                            NEXT_STARTER_1 = null;
+                            break;
+                        }
+                    }
+                    // let starter = GLOBAL_DATA_STORE[ROW].starterData.Starter;
+                    // var [Events_1, NEXT_STARTER_1] = getEvents(starter, Period_1);
+                    NEXT_STARTER_1 = null;
+                }
+                else {
+                    let starter = GLOBAL_DATA_STORE[ROW].businessData.Event_1.split(' - ')[1];
+                    var [Events_1, NEXT_STARTER_1] = getEvents(starter, Period_1);
+                    NEXT_STARTER_1 = null;
+                }
+            }
         }
         else {
             Events_1 = "";
@@ -138,6 +181,7 @@ function getBusinessData(event) {
 
             if (Period_2 != "") {
                 if (Pdrop_2 == "time") Period_2 = getPeriod(STARTER_2, Period_2);
+                console.log(STARTER_1, Period_1);
                 var [Events_2, NEXT_STARTER_2] = getEvents(STARTER_2, Period_2);
             }
 
@@ -146,9 +190,8 @@ function getBusinessData(event) {
                 NEXT_STARTER_2 = NEXT_STARTER_1;
             }
 
-            STARTER_1 = NEXT_STARTER_1
-            STARTER_2 = NEXT_STARTER_2
-            
+            if (NEXT_STARTER_1) STARTER_1 = NEXT_STARTER_1;
+            if (NEXT_STARTER_2) STARTER_2 = NEXT_STARTER_2;
 
             let data = {"Event_1": Events_1,
                         "Period_1": Period_1,
@@ -164,13 +207,22 @@ function getBusinessData(event) {
 
             // Log the collected data
             console.log(JSON.stringify(data, null, 2));
-            GLOBAL_DATA_STORE.push({"businessData": data,
-                                    "isStarter": false,
-                                    "isTODO": false
-            })
+            if (EDITMODE && ROW <= GLOBAL_DATA_STORE.length) {
+                GLOBAL_DATA_STORE.splice(ROW + 1, 0, {"businessData": data,
+                                                    "isStarter": false,
+                                                    "isTODO": false
+                                                })
+            }
+            else {
+                GLOBAL_DATA_STORE.push({"businessData": data,
+                    "isStarter": false,
+                    "isTODO": false
+})};
 
             getTable(EDITMODE);
       }
+
+    checkEdicted();
   
   }
 
@@ -197,29 +249,37 @@ function getTODOdata(event) {
   
             // Log the collected data
             console.log(JSON.stringify(data, null, 2));
-            GLOBAL_DATA_STORE.push({"TODOdata": data,
-                                    "isStarter": false,
-                                    "isTODO": true
-            })
+            if (EDITMODE && ROW <= GLOBAL_DATA_STORE.length) {
+                GLOBAL_DATA_STORE.splice(ROW + 1, 0, {"TODOdata": data,
+                                                    "isStarter": false,
+                                                    "isTODO": true
+                                                })
+            }
+            else {
+                GLOBAL_DATA_STORE.push({"TODOdata": data,
+                    "isStarter": false,
+                    "isTODO": true
+                })}
 
             getTable(EDITMODE);
         }
+
+    checkEdicted();
   }
-
-
 
 
 // Ensure this function is accessible globally
 window.getTODOdata = getTODOdata;
 
-
+export var SAVED = [];
 
 function saveDataStore() {
     if (GLOBAL_DATA_STORE.length == 0) return;
+    SAVED = GLOBAL_DATA_STORE;
 
     const dataToSave = {"Date": document.getElementById("date-cell").textContent,
                         "ScheduleRow": GLOBAL_DATA_STORE,
-                        "NotePad": document.getElementById("note-pad").value
+                        "NotePad": CATEGORIES
     };
 
     const dataStr = JSON.stringify(dataToSave);
@@ -231,6 +291,8 @@ function saveDataStore() {
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
     linkElement.click();
+
+    checkEdicted();
 }
 
 
@@ -255,7 +317,20 @@ export function loadFile() {
 
                 GLOBAL_DATA_STORE.push(...json["ScheduleRow"]); // Populate the array with new data
                 document.getElementById("date-cell").textContent = json["Date"];
-                document.getElementById("note-pad").value = json["NotePad"];
+
+                // Clear existing properties
+                for (const key in CATEGORIES) {
+                    if (CATEGORIES.hasOwnProperty(key)) {
+                        delete CATEGORIES[key];
+                    }
+                }
+
+                // Assign new properties
+                Object.assign(CATEGORIES, json["NotePad"]);
+                displayEntries(document.getElementById("entries"));
+
+                const textInput = document.getElementById("textInput");
+                textInput.value = CATEGORIES[document.getElementById("category").value];
 
                 // Updating the starter variables.
 
