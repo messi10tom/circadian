@@ -4,7 +4,8 @@ CATEGORIES = {
     "Meeting Decisions": [],
     "Remember": [],
     "To The Next Day": [],
-    "IDEAS && Philosophy": []
+    "IDEAS && Philosophy": [],
+    "Notes": []
 };
 
 
