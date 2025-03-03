@@ -368,7 +368,8 @@ export function loadFile() {
                         }
                     }
                 }
-                getTable(EDITMODE); // Update the table
+
+                getTable(EDITMODE, "Save"); // Update the table
             };
             reader.readAsText(file);
         }

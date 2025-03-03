@@ -119,16 +119,17 @@ export function createForm(container,
 }
 
 
-export function getTable(editMode=false) {
+export function getTable(editMode=false, from="") {
+    console.log("From: ", from);
 
     const table = document.getElementById("data-table");
     const numROWS = table.rows.length;
     const numDataEntries = GLOBAL_DATA_STORE.length;
 
-    if ((numROWS - numDataEntries) == 2) {
+    if ((numROWS - numDataEntries) <= 5) {
 
         const tableBody = document.getElementById('table-body');
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 10; i++) {
             const row = document.createElement('tr');
             for (let j = 0; j < 10; j++) {
                 const cell = document.createElement('td');
